@@ -29,8 +29,23 @@
 
 ### 实验4：推箱子游戏
 
-- **截止时间：** 9月2日（周二）22:00
-- **学习目标：** 综合应用 `<canvas>` 组件和小程序绘图 API，制作推箱子小游戏。实现关卡选择、游戏画面绘制、方向键控制、推箱子逻辑、胜负判断、步数统计、回退撤销等功能。
+- **实验文档：** [https://gaopursuit.oss-cn-beijing.aliyuncs.com/course/mobileDev/lab4.pdf](https://gaopursuit.oss-cn-beijing.aliyuncs.com/course/mobileDev/lab4.pdf)
+- **截止时间：** 9月2日（周三）22:00
+- **学习目标：** 1、综合所学知识创建完整的推箱子游戏；2、能够在开发过程中熟练掌握真机预览、调试等操作。
+- **评分说明：** 满分10分。提交完整实验报告得6分；课上完成任务得2分；实验报告发布在博客、代码发布在GitHub加1分；出色完成加1分；延迟提交扣1分。
+
+### 实验5：鸿蒙开发入门及计算器开发
+
+- **实验文档：** [https://oucai.club/classes/Mobile/lab05](https://oucai.club/classes/Mobile/lab05)
+- **截止时间：** 9月8日（周二）22:00
+- **学习目标：** 1、掌握基础的 ArkTS 程序开发；2、开发一个具有自己个性风格的计算器。
+- **评分说明：** 满分10分。提交完整实验报告得6分；课上完成任务得2分；实验报告发布在博客、代码发布在GitHub加1分；出色完成加1分；延迟提交扣1分。
+
+### 实验6：微信小程序云开发
+
+- **实验文档：** [https://gaopursuit.oss-cn-beijing.aliyuncs.com/course/mobileDev/lab6.pdf](https://gaopursuit.oss-cn-beijing.aliyuncs.com/course/mobileDev/lab6.pdf)
+- **截止时间：** 9月9日（周三）22:00
+- **学习目标：** 1、综合应用小程序云开发的基础知识创建图片分享社区小程序；2、掌握云数据库创建、云存储管理和云函数调用等知识。
 - **评分说明：** 满分10分。提交完整实验报告得6分；课上完成任务得2分；实验报告发布在博客、代码发布在GitHub加1分；出色完成加1分；延迟提交扣1分。
 
 ## 成绩构成
