@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "一个支持高精度四则运算的简易计算器"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "简易计算器主界面"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "计算器"
+    }
+  ]
+}

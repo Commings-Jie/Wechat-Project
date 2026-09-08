@@ -1,0 +1,104 @@
+/* components/photo-card/photo-card.wxss
+ *
+ * QQ空间"说说"卡片风格：白底通栏、作者行（头像+昵称+时间地点）、
+ * 文字在上图片在下、底部赞/评论/转发操作栏。
+ *
+ * 注意：app.wxss 里的样式对自定义组件默认【不生效】，
+ * 所以卡片相关样式必须写在这里。
+ */
+
+.card {
+  background: #fff;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+}
+
+.card-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 24rpx;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #eee;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20rpx;
+  flex: 1;
+  overflow: hidden;
+}
+
+.nickname {
+  font-size: 30rpx;
+  color: #576b95; /* QZone 昵称蓝 */
+  font-weight: 500;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.meta {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+
+.del-btn {
+  font-size: 24rpx;
+  color: #e64340;
+  padding: 8rpx 20rpx;
+  border: 1rpx solid #e64340;
+  border-radius: 24rpx;
+  flex-shrink: 0;
+}
+
+.del-btn:active {
+  background: #fdecec;
+}
+
+/* 正文：文字在上、图片在下 */
+.desc {
+  padding: 0 24rpx 16rpx;
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.pic {
+  width: 100%;
+  display: block;
+}
+
+/* 底部操作栏 */
+.card-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  border-top: 1rpx solid #f0f0f0;
+  margin-top: 4rpx;
+}
+
+.card-actions .act {
+  font-size: 26rpx;
+  color: #999;
+  margin-left: 40rpx;
+}
+
+.card-actions .act:first-child {
+  margin-left: 0;
+}
+
+.card-actions .act-hover {
+  opacity: 0.6;
+}

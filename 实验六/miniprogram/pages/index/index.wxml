@@ -1,0 +1,30 @@
+<view class="container">
+
+  <!-- QQ空间风格：顶部"发说说"入口（头像 + 分享新鲜事 + 相机） -->
+  <view class="publish-bar">
+    <image class="pb-avatar" src="{{avatarUrl}}" mode="aspectFill" bindtap="onAvatarTap" />
+    <view class="pb-input" bindtap="onPublishTap">
+      <text class="pb-placeholder">分享新鲜事...</text>
+    </view>
+    <view class="pb-camera" bindtap="onPublishTap">📷</view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{isEmpty}}" class="empty">
+    <text class="empty-text">还没有人发表说说，来发第一条吧～</text>
+  </view>
+
+  <!-- 说说列表 -->
+  <block wx:else>
+    <photo-card
+      wx:for="{{photoList}}"
+      wx:key="_id"
+      photo="{{item}}"
+      show-delete="{{item.uid === myUid}}"
+      bind:imagetap="onImageTap"
+      bind:delete="onDelete"
+    />
+    <view class="list-tip">{{hasMore ? '上拉加载更多' : '没有更多了'}}</view>
+  </block>
+
+</view>

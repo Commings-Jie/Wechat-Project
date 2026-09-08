@@ -1,0 +1,54 @@
+/**app.wxss - 全局公共样式**/
+
+page {
+  background: #f6f6f6;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+button {
+  background: initial;
+  /* 清除 button 默认 padding，保证文字/头像居中，避免文字偏移 */
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+button:focus {
+  outline: 0;
+}
+
+button::after {
+  border: none;
+}
+
+/* ========== 空状态 ========== */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 60rpx;
+}
+
+.empty .empty-text {
+  font-size: 28rpx;
+  color: #aaa;
+  margin-bottom: 30rpx;
+}
+
+/* ========== 列表底部提示 ========== */
+.list-tip {
+  text-align: center;
+  font-size: 24rpx;
+  color: #bbb;
+  padding: 30rpx 0;
+}

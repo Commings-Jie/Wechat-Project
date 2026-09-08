@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "图片分享社区",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "photo-card": "/components/photo-card/photo-card"
+  }
+}

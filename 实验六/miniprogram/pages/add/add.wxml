@@ -1,0 +1,58 @@
+<view class="container">
+  <!-- 图片描述 -->
+  <view class="section">
+    <input
+      class="desc-input"
+      placeholder="说点什么吧（选填）"
+      value="{{desc}}"
+      bindinput="onDescInput"
+      maxlength="100"
+    />
+  </view>
+
+  <!-- 选择图片：九宫格，达到上限后自动隐藏"+" -->
+  <view class="section">
+    <view class="section-title">选择图片（{{files.length}}/{{maxUpload}}）</view>
+    <view class="grid">
+      <view class="grid-item" wx:for="{{files}}" wx:key="*this">
+        <image
+          class="thumb"
+          src="{{item}}"
+          mode="aspectFill"
+          bindtap="previewFile"
+          data-index="{{index}}"
+        />
+        <view class="remove" catchtap="removeFile" data-index="{{index}}">×</view>
+      </view>
+
+      <view wx:if="{{files.length < maxUpload}}" class="grid-item add-btn" bindtap="chooseImage">
+        <text class="plus">+</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 上传按钮 -->
+  <button
+    class="upload-btn {{files.length === 0 ? 'disabled' : ''}}"
+    bindtap="upload"
+    disabled="{{uploading}}"
+  >
+    {{uploading ? '上传中…' : (files.length ? '上传 ' + files.length + ' 张图片' : '请先选择图片')}}
+  </button>
+
+  <!-- 我的历史上传 -->
+  <view class="section" wx:if="{{history.length}}">
+    <view class="section-title">我上传的（{{history.length}}）</view>
+    <view class="grid">
+      <view class="grid-item" wx:for="{{history}}" wx:key="_id">
+        <image
+          class="thumb"
+          src="{{item.photoUrl}}"
+          mode="aspectFill"
+          bindtap="previewHistory"
+          data-index="{{index}}"
+        />
+      </view>
+    </view>
+  </view>
+</view>

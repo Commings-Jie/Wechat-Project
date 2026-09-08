@@ -1,0 +1,31 @@
+<view class="card" wx:if="{{photo}}">
+
+  <!-- 作者行：头像 + 昵称 + 时间地点；删除按钮仅本人可见 -->
+  <view class="card-head">
+    <image
+      class="avatar"
+      src="{{photo.avatarUrl || defaultAvatar}}"
+      mode="aspectFill"
+      bindtap="onAvatarTap"
+    />
+    <view class="info">
+      <text class="nickname">{{photo.nickName || defaultNickname}}</text>
+      <text class="meta">{{locationText}} · {{timeText}}</text>
+    </view>
+    <view wx:if="{{showDelete}}" class="del-btn" catchtap="onDeleteTap">删除</view>
+  </view>
+
+  <!-- 正文 + 图片：QQ空间"说说"样式，文字在上、图片在下 -->
+  <view class="card-body" bindtap="onImageTap">
+    <view wx:if="{{photo.desc}}" class="desc">{{photo.desc}}</view>
+    <image class="pic" src="{{photo.photoUrl}}" mode="widthFix" lazy-load="{{true}}" />
+  </view>
+
+  <!-- 操作栏：赞 / 评论 / 转发（QQ空间风格） -->
+  <view class="card-actions">
+    <view class="act" hover-class="act-hover" bindtap="onActionTap">赞</view>
+    <view class="act" hover-class="act-hover" bindtap="onActionTap">评论</view>
+    <view class="act" hover-class="act-hover" bindtap="onActionTap">转发</view>
+  </view>
+
+</view>

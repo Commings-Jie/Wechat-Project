@@ -1,0 +1,33 @@
+<view class="container" wx:if="{{photo}}">
+  <!-- 大图，点击全屏预览 -->
+  <image class="big-pic" src="{{photo.photoUrl}}" mode="widthFix" bindtap="previewPhoto" />
+
+  <view wx:if="{{photo.desc}}" class="desc-box">{{photo.desc}}</view>
+
+  <!-- 作者信息 -->
+  <view class="author-row">
+    <image
+      class="avatar"
+      src="{{photo.avatarUrl || defaultAvatar}}"
+      mode="aspectFill"
+    />
+    <view class="author-info">
+      <text class="nickname">{{photo.nickName || defaultNickname}}</text>
+      <text class="time">{{timeText}}</text>
+    </view>
+  </view>
+
+  <view class="tip">点击图片可全屏预览</view>
+
+  <!-- 操作按钮 -->
+  <view class="btn-row">
+    <button class="btn" bindtap="downloadPhoto">下载到本地</button>
+    <button class="btn" open-type="share">分享给好友</button>
+  </view>
+
+  <button wx:if="{{canDelete}}" class="btn btn-danger" bindtap="onDelete">删除这张图片</button>
+</view>
+
+<view wx:else class="empty">
+  <text class="empty-text">图片不存在或已被删除</text>
+</view>

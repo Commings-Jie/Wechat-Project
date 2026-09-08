@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "我的",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "photo-card": "/components/photo-card/photo-card"
+  }
+}

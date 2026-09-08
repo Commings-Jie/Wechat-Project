@@ -1,0 +1,139 @@
+/* pages/homepage/homepage.wxss —— 「我的」页 */
+
+/* ========== 未登录引导 ========== */
+.mine-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 40rpx;
+}
+
+.mine-empty .me-avatar {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  border: 4rpx solid #eee;
+  background: #f0f0f0;
+}
+
+.mine-empty .me-tip {
+  margin-top: 28rpx;
+  font-size: 28rpx;
+  color: #888;
+}
+
+.mine-empty .me-btn,
+.empty .me-btn {
+  margin-top: 36rpx;
+  background: #4a90d9;
+  color: #fff;
+  font-size: 28rpx;
+  border-radius: 40rpx;
+  padding: 0 60rpx;
+  line-height: 76rpx;
+}
+
+/* ========== 我的 header ========== */
+.mine-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 56rpx 30rpx 40rpx;
+  background: linear-gradient(135deg, #4a90d9, #6fb1e7);
+}
+
+.mine-header .me-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.7);
+  background: #eee;
+  flex-shrink: 0;
+}
+
+.mine-header .me-mid {
+  display: flex;
+  flex-direction: column;
+  margin-left: 26rpx;
+  flex: 1;
+  overflow: hidden;
+}
+
+.mine-header .me-name {
+  font-size: 36rpx;
+  color: #fff;
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mine-header .me-loc {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 12rpx;
+}
+
+.mine-header .me-edit {
+  flex-shrink: 0;
+  font-size: 24rpx;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.22);
+  padding: 10rpx 20rpx;
+  border-radius: 30rpx;
+}
+
+/* ========== 我的统计 ========== */
+.mine-stats {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.mine-stats .stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mine-stats .stat-num {
+  font-size: 38rpx;
+  color: #333;
+  font-weight: 600;
+}
+
+.mine-stats .stat-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+/* ========== 我的分享 ========== */
+.section-title {
+  font-size: 28rpx;
+  color: #666;
+  padding: 28rpx 24rpx 8rpx;
+}
+
+.add-bar {
+  margin: 30rpx 24rpx 40rpx;
+  background: #4a90d9;
+  color: #fff;
+  font-size: 30rpx;
+  border-radius: 44rpx;
+  line-height: 84rpx;
+}
+
+.logout-btn {
+  margin: 20rpx auto 40rpx;
+  width: 240rpx;
+  background: transparent;
+  color: #999;
+  font-size: 24rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 36rpx;
+  line-height: 64rpx;
+}

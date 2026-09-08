@@ -1,0 +1,51 @@
+<view class="login-page">
+
+  <!-- 品牌区 -->
+  <view class="brand">
+    <view class="logo-wrap">
+      <image class="logo" src="/images/avatar.png" mode="aspectFill" />
+    </view>
+    <text class="title">{{appName}}</text>
+    <text class="subtitle">{{isLogin ? '你已登录，可以修改资料' : '设置头像昵称，加入图片分享'}}</text>
+  </view>
+
+  <!-- 资料卡 -->
+  <view class="card">
+    <button class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+      <image class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
+      <view class="avatar-badge">📷</view>
+    </button>
+    <text class="avatar-hint">点击头像更换</text>
+
+    <view class="field">
+      <text class="label">昵称</text>
+      <input
+        class="input"
+        type="nickname"
+        value="{{nickName}}"
+        placeholder="点击填写昵称"
+        placeholder-class="ph"
+        maxlength="20"
+        bindinput="onNickInput"
+        bindblur="onNickBlur"
+      />
+    </view>
+
+    <view class="tip-row" bindtap="onUseWechatProfile">
+      <text class="tip-link">试试一键填充微信资料</text>
+    </view>
+  </view>
+
+  <!-- 操作区 -->
+  <button class="primary-btn" loading="{{submitting}}" bindtap="onSubmit">
+    {{isLogin ? '保存并进入' : '进入社区'}}
+  </button>
+
+  <view class="link-row">
+    <text class="link" bindtap="onSkip">随便逛逛</text>
+    <text class="link danger" wx:if="{{isLogin}}" bindtap="onLogout">退出登录</text>
+  </view>
+
+  <text class="footnote">头像和昵称由你主动填写，仅用于展示你的图片</text>
+
+</view>

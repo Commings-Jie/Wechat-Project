@@ -1,0 +1,45 @@
+/* pages/index/index.wxss
+ * 首页 = QQ空间风格"动态"流：
+ * 顶部"分享新鲜事"发说说入口 + 下方说说卡片流（卡片样式在 photo-card 组件里）。
+ */
+
+/* ========== 顶部"发说说"入口 ========== */
+.publish-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #fff;
+  padding: 20rpx 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.publish-bar .pb-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #eee;
+}
+
+.publish-bar .pb-input {
+  flex: 1;
+  margin: 0 20rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  background: #f5f5f5;
+  border-radius: 36rpx;
+  padding: 0 28rpx;
+  overflow: hidden;
+}
+
+.publish-bar .pb-placeholder {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.publish-bar .pb-camera {
+  flex-shrink: 0;
+  font-size: 40rpx;
+  line-height: 72rpx;
+  padding: 0 8rpx;
+}

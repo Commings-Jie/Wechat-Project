@@ -1,0 +1,60 @@
+<view class="container">
+
+  <!-- 未登录：引导登录 -->
+  <view wx:if="{{!isLogin}}" class="mine-empty">
+    <image class="me-avatar" src="{{defaultAvatar}}" mode="aspectFill" />
+    <text class="me-tip">登录后查看你的分享</text>
+    <button class="me-btn" bindtap="onLoginTap">去登录</button>
+  </view>
+
+  <!-- 已登录 -->
+  <block wx:else>
+    <!-- 我的 header -->
+    <view class="mine-header">
+      <image class="me-avatar" src="{{profile.avatarUrl || defaultAvatar}}" mode="aspectFill" bindtap="onLoginTap" />
+      <view class="me-mid">
+        <text class="me-name">{{profile.nickName}}</text>
+        <text class="me-loc">{{profile.province || '未知星球'}}</text>
+      </view>
+      <view class="me-edit" bindtap="onLoginTap">编辑 ›</view>
+    </view>
+
+    <!-- 我的统计 -->
+    <view class="mine-stats">
+      <view class="stat-item">
+        <text class="stat-num">{{myPhotoCount}}</text>
+        <text class="stat-label">我的说说</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-num">{{myViewCount}}</text>
+        <text class="stat-label">总浏览</text>
+      </view>
+      <view class="stat-item" bindtap="onLoginTap">
+        <text class="stat-num">›</text>
+        <text class="stat-label">编辑资料</text>
+      </view>
+    </view>
+
+    <button class="logout-btn" bindtap="onLogoutTap">退出登录</button>
+
+    <!-- 我的分享 -->
+    <view class="section-title">我的分享</view>
+    <view wx:if="{{isEmpty}}" class="empty">
+      <text class="empty-text">你还没有上传图片，去分享第一张吧～</text>
+      <button class="me-btn" bindtap="onAddTap">去上传</button>
+    </view>
+    <block wx:else>
+      <photo-card
+        wx:for="{{photoList}}"
+        wx:key="_id"
+        photo="{{item}}"
+        show-delete="{{true}}"
+        bind:imagetap="onImageTap"
+        bind:delete="onDelete"
+      />
+      <view class="list-tip">{{hasMore ? '上拉加载更多' : '没有更多了'}}</view>
+    </block>
+
+    <button class="add-bar" bindtap="onAddTap">+ 分享图片</button>
+  </block>
+</view>
