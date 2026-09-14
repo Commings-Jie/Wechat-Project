@@ -16,11 +16,11 @@
       <view class="info-card">
         <view class="card-header">
           <view class="avatar-wrapper">
-            <text class="avatar-text">贺</text>
+            <text class="avatar-text">张</text>
           </view>
           <view class="name-section">
-            <text class="name">贺凡思杰</text>
-            <text class="subtitle">智能科学与技术专业</text>
+            <text class="name">{{name}}</text>
+            <text class="subtitle">{{major}}专业</text>
           </view>
         </view>
 
@@ -34,7 +34,7 @@
             </view>
             <view class="info-content">
               <text class="info-label">邮箱</text>
-              <text class="info-value">2167316266@qq.com</text>
+              <text class="info-value">{{email}}</text>
             </view>
             <view class="info-action">
               <text class="action-text">复制</text>
@@ -47,7 +47,7 @@
             </view>
             <view class="info-content">
               <text class="info-label">个人博客</text>
-              <text class="info-value">commings-jie.github.io</text>
+              <text class="info-value">{{blog}}</text>
             </view>
             <view class="info-action">
               <text class="action-text">访问</text>
@@ -60,7 +60,7 @@
             </view>
             <view class="info-content">
               <text class="info-label">学校</text>
-              <text class="info-value">中国海洋大学 · 信息学部</text>
+              <text class="info-value">{{school}}</text>
             </view>
           </view>
 
@@ -70,7 +70,7 @@
             </view>
             <view class="info-content">
               <text class="info-label">专业</text>
-              <text class="info-value">智能科学与技术</text>
+              <text class="info-value">{{major}}</text>
             </view>
           </view>
         </view>
@@ -82,7 +82,7 @@
           <view class="title-bar"></view>
           <text class="title-text">关于我</text>
         </view>
-        <text class="intro-text">一名白日梦想家，正在学习移动软件开发，平时听听歌、打打游戏</text>
+        <text class="intro-text">{{intro}}</text>
       </view>
 
       <!-- 技能标签卡片 -->

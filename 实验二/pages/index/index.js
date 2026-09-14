@@ -1,12 +1,12 @@
 // index.js
 Page({
   data: {
-    name: '贺凡思杰',
-    school: '中国海洋大学 · 信息学部',
-    major: '智能科学与技术',
-    email: '2167316266@qq.com',
-    blog: 'https://commings-jie.github.io/',
-    intro: '一名白日梦想家，正在学习移动软件开发，平时听听歌、打打游戏',
+    name: '张三',
+    school: '某某大学 · 信息学部',
+    major: '计算机科学与技术',
+    email: 'developer@example.com',
+    blog: 'https://example.com',
+    intro: '一名白日梦想家，正在学习移动软件开发，平时喜欢阅读、打球与写代码',
     skills: ['Python', '微信小程序', '前端开发', '数据分析', 'AI应用']
   },
 
@@ -46,7 +46,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '贺凡思杰的名片',
+      title: `${this.data.name}的名片`,
       path: '/pages/index/index',
       imageUrl: '/images/card-header.png'
     }
