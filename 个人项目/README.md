@@ -1,7 +1,7 @@
 # 心情天气站 (Mood Weather Station) 🌤️
 
 > **中国海洋大学 2026 夏季学期《移动软件开发》个人期末大作业**  
-> 学生姓名：贺凡思杰 &nbsp;|&nbsp; 学号：24020007043 &nbsp;|&nbsp; 专业：智能科学与技术
+> 开发者：贺凡思杰 &nbsp;|&nbsp; 专业：智能科学与技术
 
 [![WeChat Mini Program](https://img.shields.io/badge/WeChat-MiniProgram-07C160?logo=wechat&logoColor=white)](https://mp.weixin.qq.com/)
 [![Tencent CloudBase](https://img.shields.io/badge/Serverless-CloudBase-0052D9?logo=tencent-cloud&logoColor=white)](https://cloud.tencent.com/)
