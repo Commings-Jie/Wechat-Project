@@ -1,0 +1,233 @@
+<navigation-bar title="心情天气站" back="{{false}}" color="#153940" background="#F3F7F7"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y enhanced show-scrollbar="{{false}}" refresher-enabled="{{true}}" refresher-triggered="{{isRefreshing}}" bindrefresherrefresh="onPullRefresh" refresher-background="transparent">
+  <view class="page-shell home-shell">
+    
+    <!-- 1. 今日天空气象馆 Hero 卡片 -->
+    <view wx:if="{{weatherState === 'ready'}}" class="sky-hero-panel weather-{{weather.key}}">
+      <image class="sky-hero-bg" src="{{weather.background}}" mode="aspectFill"></image>
+      <view class="sky-hero-glow"></view>
+      <view class="sky-hero-inner">
+        <view class="hero-topline">
+          <view class="hero-badge tap-active" bindtap="onTapLocation" hover-class="badge-hover">
+            <view class="live-dot {{weatherError ? 'offline' : ''}}"></view>
+            <text class="hero-loc">{{weather.locationText}}</text>
+            <text class="refresh-hint-icon">↻</text>
+          </view>
+          <view class="hero-date-tag">{{todayText}}</view>
+        </view>
+
+        <view class="hero-center">
+          <view class="hero-weather-title">{{weather.label}}</view>
+          <view class="hero-reading">
+            <text class="hero-temp">{{weather.temperatureText}}</text>
+            <view class="hero-meta">
+              <text class="hero-range">{{weather.rangeText}}</text>
+              <view class="hero-subline">
+                <text class="hero-wind">{{weather.windText}}</text>
+                <text wx:if="{{weather.humidityText}}" class="hero-humidity">· 湿度 {{weather.humidityText}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="hero-action-bar">
+          <view class="hero-greeting">
+            <text class="sparkle-icon">✨</text>
+            <text>{{greeting}}</text>
+          </view>
+          <view class="hero-record-pill tap-active" bindtap="openRecord">
+            <text class="plus-icon">＋</text>
+            <text>记下此刻</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 1-B. 未授权定位时的日系手帐便签 Hero 卡片 -->
+    <view wx:elif="{{weatherState === 'denied'}}" class="sky-hero-panel sky-hero-denied-panel">
+      <view class="denied-glow"></view>
+      <view class="sky-hero-inner denied-inner">
+        <view class="hero-topline">
+          <view class="hero-badge denied-badge">
+            <text class="hero-loc">📍 定位未开启</text>
+          </view>
+          <view class="hero-date-tag">{{todayText}}</view>
+        </view>
+
+        <view class="denied-center">
+          <view class="denied-icon">🌤️</view>
+          <view class="denied-title">开启定位 · 解锁今日天空</view>
+          <view class="denied-desc">开启位置权限后，将自动呈现你所在城市的实时天气印章与温湿度</view>
+        </view>
+
+        <view class="hero-action-bar denied-action-bar">
+          <view class="hero-setting-pill tap-active" bindtap="openLocationSetting">
+            <text class="setting-icon">📍</text>
+            <text>开启定位</text>
+          </view>
+          <view class="hero-record-pill tap-active" bindtap="openRecord">
+            <text class="plus-icon">＋</text>
+            <text>记下此刻</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 1-C. 天气加载中态 -->
+    <view wx:else class="sky-hero-panel sky-hero-loading-panel">
+      <view class="sky-hero-glow"></view>
+      <view class="sky-hero-inner loading-inner">
+        <view class="hero-topline">
+          <view class="hero-badge">
+            <view class="live-dot"></view>
+            <text class="hero-loc">正在定位城市...</text>
+          </view>
+          <view class="hero-date-tag">{{todayText}}</view>
+        </view>
+
+        <view class="hero-center loading-center">
+          <view class="hero-weather-title">感知天空气息中...</view>
+          <view class="loading-subtext">正在连接云端气象台</view>
+        </view>
+
+        <view class="hero-action-bar">
+          <view class="hero-greeting">
+            <text class="sparkle-icon">✨</text>
+            <text>{{greeting}}</text>
+          </view>
+          <view class="hero-record-pill tap-active" bindtap="openRecord">
+            <text class="plus-icon">＋</text>
+            <text>记下此刻</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 2. 手帐打卡 Bento 便签栏（纯展示，无跳转） -->
+    <view class="bento-board">
+      <view class="bento-sticky streak-card">
+        <view class="sticky-pin"></view>
+        <view class="sticky-head">
+          <text class="sticky-label">连续记录</text>
+          <text class="sticky-badge">DAY</text>
+        </view>
+        <view class="sticky-body">
+          <text class="sticky-number">{{currentStreak}}</text>
+          <text class="sticky-unit">天</text>
+        </view>
+        <view class="sticky-footer">
+          <text class="sticky-tip">{{currentStreak > 0 ? '生活因记录而珍贵' : '今天还没打卡呢'}}</text>
+        </view>
+      </view>
+
+      <view class="bento-sticky mood-card">
+        <view class="sticky-pin pin-right"></view>
+        <view class="sticky-head">
+          <text class="sticky-label">当月心情</text>
+          <text class="mood-symbol-pill">{{dominantMood}}</text>
+        </view>
+        <view class="sticky-body">
+          <text class="sticky-number">{{monthAverage}}</text>
+          <text class="sticky-unit">/ 5分</text>
+        </view>
+        <view class="sticky-footer">
+          <text class="sticky-tip">累计已收藏 {{totalDays}} 个日子</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 3. 好友空间与往日补记入口（和纸胶带便签条） -->
+    <view class="interactive-strip-row">
+      <view class="washi-strip friends-strip tap-active" bindtap="openFriends">
+        <view class="strip-icon-circle">☷</view>
+        <view class="strip-content">
+          <view class="strip-title">好友空间</view>
+          <view class="strip-desc">看看朋友们今天的天气</view>
+        </view>
+        <text class="strip-arrow">›</text>
+      </view>
+
+      <picker mode="date" value="{{today}}" start="{{minDate}}" end="{{maxDate}}" bindchange="openPastRecord" class="past-picker-wrap">
+        <view class="washi-strip past-strip tap-active">
+          <view class="strip-icon-circle past">✎</view>
+          <view class="strip-content">
+            <view class="strip-title">补记往日</view>
+            <view class="strip-desc">想起某天的时光片段</view>
+          </view>
+          <text class="strip-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 4. 最近生活手帐拍立得回忆流 -->
+    <view class="section-title-wrap">
+      <view class="section-main-title">
+        <view class="section-dot"></view>
+        <text>生活手帐</text>
+      </view>
+      <text class="section-sub-title">最近的心情切片</text>
+    </view>
+
+    <view wx:if="{{recentRecords.length}}" class="journal-stream">
+      <view
+        wx:for="{{recentRecords}}"
+        wx:key="date"
+        class="journal-entry-card tap-active"
+        data-date="{{item.date}}"
+        bindtap="editRecord"
+      >
+        <!-- 装饰性手帐虚线边与左侧天气珠 -->
+        <view class="entry-left">
+          <view class="mood-orb mood-orb-{{item.weather}}">
+            <text class="orb-symbol">{{item.symbol}}</text>
+          </view>
+          <view class="mood-score-capsule">{{item.moodScore}}分</view>
+        </view>
+
+        <!-- 中间手写笔记与标签 -->
+        <view class="entry-center">
+          <view class="entry-top">
+            <text class="entry-weather-text">{{item.weatherLabel}}</text>
+            <text class="entry-date">{{item.dateText}}</text>
+          </view>
+          <view class="entry-quote">{{item.moodText}}</view>
+          <view class="entry-tags">
+            <text wx:if="{{item.tagText}}" class="washi-tag mint"># {{item.tagText}}</text>
+          </view>
+        </view>
+
+        <!-- 右侧拍立得相框 / 扇形层叠多图展台（若有生活照片） -->
+        <view wx:if="{{item.images && item.images.length}}" class="entry-right">
+          <view class="polaroid-fan-stack count-{{item.images.length}}">
+            <view
+              wx:for="{{item.images}}"
+              wx:for-item="img"
+              wx:for-index="idx"
+              wx:key="*this"
+              class="fan-card fan-card-{{idx}}"
+              catchtap="previewRecordImages"
+              data-date="{{item.date}}"
+              data-current="{{img}}"
+            >
+              <image class="fan-img" src="{{img}}" mode="aspectFill"></image>
+            </view>
+            <view wx:if="{{item.images.length > 1}}" class="fan-count-badge">
+              <text class="fan-count-text">{{item.images.length}}</text>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="entry-arrow-wrap">
+          <text class="entry-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty-journal-box">
+      <view class="empty-icon">🍃</view>
+      <view class="empty-title">手帐本还是空白的</view>
+      <view class="empty-desc">点击上方「记下此刻」，收录今天的一句心情吧</view>
+    </view>
+
+  </view>
+</scroll-view>
+

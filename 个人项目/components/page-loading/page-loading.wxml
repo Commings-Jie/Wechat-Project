@@ -1,0 +1,14 @@
+<view wx:if="{{visible}}" class="page-loading" aria-role="alert" aria-label="页面加载中">
+  <image class="page-loading-image" src="/images/loading/mood-weather-station.jpg" mode="aspectFill"></image>
+  <view class="page-loading-mask"></view>
+  <view class="page-loading-content">
+    <view class="page-loading-mark">MOOD WEATHER</view>
+    <view class="page-loading-title">心情天气站</view>
+    <view class="page-loading-subtitle">把今天的心情，放进天气里</view>
+    <view class="page-loading-dots" aria-hidden="true">
+      <view class="page-loading-dot dot-one"></view>
+      <view class="page-loading-dot dot-two"></view>
+      <view class="page-loading-dot dot-three"></view>
+    </view>
+  </view>
+</view>

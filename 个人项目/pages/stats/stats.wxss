@@ -1,0 +1,937 @@
+page {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.scrollarea {
+  height: 100vh;
+}
+
+.stats-shell {
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+/* 顶部光感气象横幅 */
+.stats-intro {
+  min-height: 186rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 34rpx 32rpx;
+  box-sizing: border-box;
+  border-radius: var(--border-radius-lg);
+  background: linear-gradient(135deg, rgba(230, 246, 245, 0.88) 0%, rgba(254, 246, 238, 0.82) 100%);
+  margin-bottom: 24rpx;
+}
+
+.intro-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.intro-tag {
+  margin-bottom: 10rpx;
+}
+
+.intro-title {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+  letter-spacing: 0.5rpx;
+}
+
+.intro-text {
+  margin-top: 8rpx;
+  color: var(--color-text-sub);
+  font-size: 23rpx;
+  line-height: 1.4;
+}
+
+.dominant-seal {
+  width: 114rpx;
+  height: 114rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFFDF8 0%, #FFF3DD 100%);
+  border: 4rpx solid #FFFFFF;
+  box-shadow: 0 8rpx 24rpx rgba(243, 156, 107, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 20rpx;
+}
+
+.dominant-symbol {
+  font-size: 58rpx;
+  line-height: 1;
+}
+
+/* Bento 概览数据格 */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.overview-item {
+  height: 148rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-md);
+  padding: 10rpx;
+  box-sizing: border-box;
+}
+
+.overview-value {
+  color: var(--color-primary);
+  font-size: 40rpx;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.overview-text {
+  font-size: 28rpx;
+}
+
+.overview-label {
+  margin-top: 8rpx;
+  color: var(--color-text-sub);
+  font-size: 21rpx;
+  font-weight: 500;
+}
+
+/* 连签胶囊卡 */
+.streak-row {
+  height: 130rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.streak-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.streak-value {
+  color: var(--color-text-main);
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.streak-label {
+  margin-top: 6rpx;
+  color: var(--color-text-sub);
+  font-size: 21rpx;
+}
+
+.streak-divider {
+  width: 2rpx;
+  height: 52rpx;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* 分区标题 */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin: 32rpx 0 16rpx 6rpx;
+  font-size: 30rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.section-badge {
+  font-size: 26rpx;
+}
+
+/* 纸胶带装饰 */
+.washi-tape-strip {
+  position: absolute;
+  top: -10rpx;
+  height: 24rpx;
+  border-radius: 4rpx;
+  background: rgba(249, 202, 83, 0.55);
+  box-shadow: 0 2rpx 6rpx rgba(249, 202, 83, 0.2);
+  transform: rotate(-1.5deg);
+  z-index: 2;
+}
+
+.washi-tape-center {
+  left: 50%;
+  width: 140rpx;
+  margin-left: -70rpx;
+}
+
+
+/* 4. 星夜月度回顾与气象手记融合卡 */
+.review-card {
+  position: relative;
+  overflow: hidden;
+  margin-top: 10rpx;
+  padding: 34rpx 30rpx 30rpx;
+  border-radius: var(--border-radius-lg);
+  background: linear-gradient(145deg, #15383F 0%, #1A4D57 55%, #277A85 100%);
+  color: #FFFFFF;
+  box-shadow: 0 14rpx 36rpx rgba(21, 56, 63, 0.28);
+}
+
+.review-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-badge {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.16);
+  color: #E6F6F8;
+  font-size: 20rpx;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  letter-spacing: 0.5rpx;
+}
+
+.review-date-tag {
+  font-size: 21rpx;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+}
+
+.review-title {
+  margin-top: 14rpx;
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 0.5rpx;
+}
+
+.review-grid {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 22rpx;
+}
+
+.review-metric {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18rpx 8rpx;
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.review-value {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.review-label {
+  margin-top: 6rpx;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 21rpx;
+}
+
+.review-note-box {
+  margin-top: 22rpx;
+  padding: 22rpx 24rpx;
+  background: rgba(0, 0, 0, 0.16);
+  border-radius: 14rpx;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.review-note-quote {
+  font-size: 23rpx;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+}
+
+.highlight-gold {
+  color: #FFCA40;
+  font-weight: 800;
+}
+
+.highlight-cyan {
+  color: #5BE2D3;
+  font-weight: 800;
+}
+
+/* 空状态 */
+.stats-empty {
+  margin-top: 40rpx;
+  padding: 80rpx 40rpx;
+  text-align: center;
+  border-radius: var(--border-radius-lg);
+}
+
+.empty-icon {
+  font-size: 64rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.empty-text {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: var(--color-text-sub);
+  line-height: 1.6;
+}
+
+/* ====================================================
+   年度像素心情墙、治愈密码、七日节律
+   ==================================================== */
+
+
+/* 1. 年度像素心情墙卡片 */
+.pixel-wall-card {
+  position: relative;
+  overflow: hidden;
+  padding: 34rpx 24rpx 28rpx;
+  margin-bottom: 28rpx;
+  border-radius: var(--border-radius-md);
+  background: #FFFFFF;
+}
+
+.pixel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.06);
+}
+
+.year-switcher {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+
+.year-arrow-btn {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: #F4EFE6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  color: var(--color-text-main);
+}
+
+.year-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.pixel-summary-badge {
+  font-size: 21rpx;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: rgba(42, 126, 136, 0.08);
+  padding: 6rpx 14rpx;
+  border-radius: 20rpx;
+}
+
+.pixel-legend-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+  padding: 10rpx 14rpx;
+  background: #FAF7F0;
+  border-radius: 12rpx;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 20rpx;
+  color: var(--color-text-sub);
+}
+
+.legend-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 3rpx;
+}
+
+/* 模式A：12月 x 31日 矩阵 */
+.pixel-matrix-wrap {
+  width: 100%;
+  margin-bottom: 16rpx;
+}
+
+.pixel-matrix-scroll {
+  width: 100%;
+}
+
+.pixel-matrix-table {
+  display: flex;
+  flex-direction: column;
+  min-width: 620rpx;
+}
+
+.matrix-header-row {
+  display: flex;
+  margin-bottom: 10rpx;
+}
+
+.matrix-axis-corner {
+  width: 40rpx;
+  flex-shrink: 0;
+}
+
+.matrix-month-col-head {
+  flex: 1;
+  text-align: center;
+  font-size: 19rpx;
+  font-weight: 700;
+  color: var(--color-text-sub);
+}
+
+.matrix-body {
+  display: flex;
+  position: relative;
+}
+
+.matrix-axis-col {
+  width: 40rpx;
+  flex-shrink: 0;
+  position: relative;
+  height: 744rpx;
+}
+
+.matrix-day-num {
+  position: absolute;
+  left: 0;
+  font-size: 18rpx;
+  color: var(--color-text-tertiary);
+  line-height: 20rpx;
+}
+
+.matrix-month-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  padding: 0 2rpx;
+}
+
+.pixel-cell {
+  width: 100%;
+  height: 20rpx;
+  border-radius: 4rpx;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pixel-cell.cell-recorded:active {
+  transform: scale(1.25);
+  z-index: 5;
+}
+
+.pixel-cell.cell-active {
+  outline: 3rpx solid #1E3D42;
+  transform: scale(1.15);
+  z-index: 4;
+}
+
+.pixel-cell.cell-invalid {
+  visibility: hidden;
+}
+
+
+/* 交互抽屉浮层 */
+.pixel-drawer {
+  margin-top: 20rpx;
+  padding: 20rpx 22rpx;
+  border-radius: 14rpx;
+  background: #FAF7F0;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.drawer-inner.has-record {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-date {
+  font-size: 24rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.drawer-weather {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 21rpx;
+  font-weight: 700;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.drawer-weather-symbol {
+  font-size: 24rpx;
+  line-height: 1;
+}
+
+.drawer-weather-name {
+  color: var(--color-text-main);
+  font-weight: 700;
+}
+
+.drawer-weather-divider {
+  color: var(--color-text-tertiary);
+  margin: 0 2rpx;
+}
+
+.drawer-weather-score {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.drawer-tags {
+  font-size: 21rpx;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.drawer-text {
+  font-size: 23rpx;
+  color: #4A3E2A;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.drawer-inner.is-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 22rpx;
+  color: var(--color-text-tertiary);
+}
+
+/* 2. 🔍 治愈密码：标签因果分析卡片 */
+.healing-card {
+  padding: 32rpx 28rpx;
+  margin-bottom: 28rpx;
+  border-radius: var(--border-radius-md);
+  background: #FFFFFF;
+}
+
+.healing-intro {
+  margin-bottom: 24rpx;
+}
+
+.healing-tag {
+  background: rgba(38, 122, 96, 0.1);
+  color: #1E6D54;
+  border: 1px solid rgba(38, 122, 96, 0.2);
+  margin-bottom: 8rpx;
+}
+
+.healing-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.healing-rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.healing-rank-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.rank-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  white-space: nowrap;
+  font-size: 20rpx;
+  font-weight: 800;
+  flex-shrink: 0;
+  min-width: 110rpx;
+  box-sizing: border-box;
+}
+
+.rank-medal-text {
+  white-space: nowrap;
+  letter-spacing: 0.5rpx;
+}
+
+.rank-badge-1 {
+  background: rgba(255, 166, 48, 0.16);
+  color: #B56F0D;
+  border: 1px solid rgba(255, 166, 48, 0.35);
+}
+
+.rank-badge-2 {
+  background: rgba(131, 151, 157, 0.16);
+  color: #4F676D;
+  border: 1px solid rgba(131, 151, 157, 0.35);
+}
+
+.rank-badge-3 {
+  background: rgba(205, 127, 50, 0.14);
+  color: #99582A;
+  border: 1px solid rgba(205, 127, 50, 0.35);
+}
+
+
+.rank-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.rank-top-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rank-tag-name {
+  font-size: 25rpx;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.rank-score {
+  font-size: 21rpx;
+  color: var(--color-text-sub);
+}
+
+.rank-track {
+  height: 12rpx;
+  background: #EDE8DF;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.rank-fill {
+  height: 100%;
+  border-radius: 6rpx;
+  background: linear-gradient(90deg, #5BBBC7 0%, #2A7E88 100%);
+}
+
+.rank-count {
+  font-size: 20rpx;
+  color: var(--color-text-tertiary);
+  width: 54rpx;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 双子对称洞察便签 */
+.twin-insight-card {
+  margin-top: 20rpx;
+  padding: 22rpx 24rpx;
+  border-radius: 14rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  box-sizing: border-box;
+}
+
+.twin-insight-card.drain-card {
+  background: #FFF5F2;
+  border: 1px solid rgba(224, 112, 90, 0.25);
+}
+
+.twin-insight-card.healing-card-note {
+  background: #FFF9EC;
+  border: 1px solid rgba(240, 185, 75, 0.35);
+}
+
+.twin-badge-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.twin-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 14rpx;
+  border-radius: 16rpx;
+  font-size: 21rpx;
+  font-weight: 800;
+  letter-spacing: 0.5rpx;
+}
+
+.badge-warning {
+  background: rgba(220, 100, 80, 0.15);
+  color: #C04E38;
+  border: 1px solid rgba(220, 100, 80, 0.28);
+}
+
+.badge-healing {
+  background: rgba(245, 175, 55, 0.16);
+  color: #9E670B;
+  border: 1px solid rgba(245, 175, 55, 0.32);
+}
+
+.twin-insight-text {
+  font-size: 23rpx;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.drain-card .twin-insight-text {
+  color: #633E37;
+}
+
+.healing-card-note .twin-insight-text {
+  color: #5C4922;
+}
+
+.healing-empty {
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 23rpx;
+  color: var(--color-text-tertiary);
+}
+
+/* 3. ⏰ 七日情绪晴雨时钟卡片 */
+.rhythm-card {
+  padding: 32rpx 26rpx;
+  margin-bottom: 28rpx;
+  border-radius: var(--border-radius-md);
+  background: #FFFFFF;
+}
+
+.rhythm-pills-row {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.rhythm-pill {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  padding: 16rpx 20rpx;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+}
+
+.peak-pill {
+  background: linear-gradient(135deg, rgba(255, 166, 48, 0.14) 0%, rgba(255, 107, 53, 0.08) 100%);
+  border: 1px solid rgba(255, 166, 48, 0.35);
+}
+
+.valley-pill {
+  background: linear-gradient(135deg, rgba(131, 151, 157, 0.14) 0%, rgba(94, 78, 158, 0.08) 100%);
+  border: 1px solid rgba(131, 151, 157, 0.35);
+}
+
+.pill-badge {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.pill-icon {
+  font-size: 22rpx;
+}
+
+.pill-tag {
+  font-size: 21rpx;
+  font-weight: 700;
+  letter-spacing: 0.5rpx;
+}
+
+.peak-pill .pill-tag {
+  color: #B5650D;
+}
+
+.valley-pill .pill-tag {
+  color: #4B6369;
+}
+
+.pill-val {
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.peak-pill .pill-val {
+  color: #D96A27;
+}
+
+.valley-pill .pill-val {
+  color: #2F474D;
+}
+
+.rhythm-chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 290rpx;
+  padding: 14rpx 14rpx 20rpx;
+  background: #FAF7F0;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.rhythm-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.col-head-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 74rpx;
+  margin-bottom: 8rpx;
+}
+
+.col-symbol {
+  font-size: 26rpx;
+  line-height: 1.1;
+  margin-bottom: 4rpx;
+}
+
+.col-empty-dot {
+  font-size: 28rpx;
+  line-height: 1.1;
+  color: #C2BBB0;
+  margin-bottom: 4rpx;
+}
+
+.col-score {
+  font-size: 20rpx;
+  font-weight: 700;
+  color: var(--color-text-sub);
+  line-height: 1;
+}
+
+.col-score.score-empty {
+  color: #C2BBB0;
+}
+
+.col-bar-track {
+  width: 22rpx;
+  height: 144rpx;
+  background: #EDE8DF;
+  border-radius: 11rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.col-bar-fill {
+  width: 100%;
+  border-radius: 11rpx;
+  background: linear-gradient(180deg, #46B3BE 0%, #2A7E88 100%);
+  transition: height 0.3s ease;
+}
+
+.col-peak .col-bar-fill {
+  background: linear-gradient(180deg, #FFA630 0%, #FF6B35 100%);
+  box-shadow: 0 0 10rpx rgba(255, 107, 53, 0.4);
+}
+
+.col-peak .col-score {
+  color: #D96A27;
+  font-weight: 800;
+}
+
+.col-valley .col-bar-fill {
+  background: linear-gradient(180deg, #9385C7 0%, #5E4E9E 100%);
+}
+
+.col-empty .col-bar-track {
+  background: transparent;
+  border: 1px dashed #DDD7CC;
+}
+
+.col-name {
+  margin-top: 12rpx;
+  font-size: 21rpx;
+  font-weight: 600;
+  color: var(--color-text-sub);
+}
+
+.col-peak .col-name {
+  color: #D96A27;
+  font-weight: 800;
+}
+
+/* 节律手签小纸条 */
+.rhythm-note-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  padding: 18rpx 20rpx;
+  border-radius: 14rpx;
+  background: #F4EFE6;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.strip-badge-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.strip-badge {
+  font-size: 20rpx;
+  font-weight: 700;
+  color: #94571A;
+  background: rgba(245, 175, 55, 0.16);
+  padding: 2rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+.strip-text {
+  font-size: 23rpx;
+  line-height: 1.6;
+  color: #4A3E2A;
+  font-weight: 500;
+}

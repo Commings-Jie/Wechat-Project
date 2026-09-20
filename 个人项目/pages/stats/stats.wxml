@@ -1,0 +1,269 @@
+<navigation-bar title="心情统计" back="{{false}}" color="#2C3E42" background="#FAF7F2"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y enhanced show-scrollbar="{{false}}">
+  <view class="page-shell stats-shell">
+    <view class="stats-intro glass-panel">
+      <view class="intro-copy">
+        <view class="washi-tag intro-tag">📊 气象年报</view>
+        <view class="intro-title">岁月晴雨全景</view>
+        <view class="intro-text">每一次情绪的微澜，汇聚成生活的气象篇章</view>
+      </view>
+      <view class="dominant-seal">
+        <text class="dominant-symbol">{{dominantSymbol}}</text>
+      </view>
+    </view>
+
+    <view class="overview-grid">
+      <view class="overview-item journal-card tap-active">
+        <text class="overview-value">{{totalDays}}</text>
+        <text class="overview-label">记录天数</text>
+      </view>
+      <view class="overview-item journal-card tap-active">
+        <text class="overview-value overview-text">{{dominantMood}}</text>
+        <text class="overview-label">最常心情</text>
+      </view>
+      <view class="overview-item journal-card tap-active">
+        <text class="overview-value overview-text">{{averageMood}}</text>
+        <text class="overview-label">平均心情 / 5</text>
+      </view>
+    </view>
+
+    <view class="streak-row journal-card">
+      <view class="streak-col">
+        <text class="streak-value">🔥 {{currentStreak}}</text>
+        <text class="streak-label">当前连续天数</text>
+      </view>
+      <view class="streak-divider"></view>
+      <view class="streak-col">
+        <text class="streak-value">🏆 {{longestStreak}}</text>
+        <text class="streak-label">最长连续天数</text>
+      </view>
+    </view>
+
+    <view wx:if="{{hasRecords}}">
+      <!-- 1. 🎨 年度像素心情墙 (Year in Pixels) -->
+      <view class="section-title">
+        <text class="section-badge">🎨</text>
+        <text>年度像素心情墙</text>
+      </view>
+
+      <view class="pixel-wall-card journal-card">
+        <view class="washi-tape-strip washi-tape-center"></view>
+        
+        <!-- 年份切换器与摘要（今年为下限，有跨年才放开箭头） -->
+        <view class="pixel-header">
+          <view class="year-switcher">
+            <view wx:if="{{canGoPrev}}" class="year-arrow-btn tap-active" bindtap="onChangePixelYear" data-delta="-1">◀</view>
+            <text class="year-title">{{pixelYear}} 情绪原色织锦</text>
+            <view wx:if="{{canGoNext}}" class="year-arrow-btn tap-active" bindtap="onChangePixelYear" data-delta="1">▶</view>
+          </view>
+          <view class="pixel-summary-badge">已点亮 {{pixelData.totalLogged}} 天 · 放晴率 {{pixelData.sunnyRate}}%</view>
+        </view>
+
+        <!-- 天候图例说明 -->
+        <view class="pixel-legend-row">
+          <view class="legend-item"><view class="legend-dot" style="background:#FFA630;"></view><text>晴天</text></view>
+          <view class="legend-item"><view class="legend-dot" style="background:#00A896;"></view><text>多云</text></view>
+          <view class="legend-item"><view class="legend-dot" style="background:#83979D;"></view><text>阴天</text></view>
+          <view class="legend-item"><view class="legend-dot" style="background:#3B82C4;"></view><text>雨天</text></view>
+          <view class="legend-item"><view class="legend-dot" style="background:#5E4E9E;"></view><text>雷雨</text></view>
+          <view class="legend-item"><view class="legend-dot" style="background:#E66779;"></view><text>彩虹</text></view>
+        </view>
+
+        <!-- 365天全景年谱矩阵 (12月 × 31日) -->
+        <view class="pixel-matrix-wrap">
+          <scroll-view scroll-x enhanced show-scrollbar="{{false}}" class="pixel-matrix-scroll">
+            <view class="pixel-matrix-table">
+              <!-- 表头：月份 -->
+              <view class="matrix-header-row">
+                <view class="matrix-axis-corner"></view>
+                <view wx:for="{{pixelData.monthsData}}" wx:key="month" class="matrix-month-col-head">
+                  <text>{{item.label}}</text>
+                </view>
+              </view>
+              <!-- 矩阵本体：各月份 31 天 -->
+              <view class="matrix-body">
+                <view class="matrix-axis-col">
+                  <view wx:for="{{[1,5,10,15,20,25,30]}}" wx:key="*this" class="matrix-day-num" style="top: {{(item - 1) * 24}}rpx;">
+                    <text>{{item}}</text>
+                  </view>
+                </view>
+                <view wx:for="{{pixelData.monthsData}}" wx:key="month" wx:for-item="mCol" class="matrix-month-col">
+                  <view wx:for="{{mCol.days}}" wx:key="day"
+                        class="pixel-cell {{item.isInvalid ? 'cell-invalid' : ''}} {{item.hasRecord ? 'cell-recorded' : 'cell-empty'}} {{activePixel.date === item.date ? 'cell-active' : ''}}"
+                        style="background-color: {{item.color}};"
+                        bindtap="onTapPixel"
+                        data-item="{{item}}">
+                  </view>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+
+        <!-- 交互点击日签微便签抽屉（修复正确的天气图标与天候名称） -->
+        <view class="pixel-drawer {{activePixel ? 'show' : ''}}">
+          <view wx:if="{{activePixel.hasRecord}}" class="drawer-inner has-record">
+            <view class="drawer-head">
+              <view class="drawer-date">📅 {{activePixel.date}}</view>
+              <view class="drawer-weather" style="border-color: {{activePixel.color}};">
+                <text class="drawer-weather-symbol">{{activePixel.symbol}}</text>
+                <text class="drawer-weather-name">{{activePixel.weatherLabel}}</text>
+                <text class="drawer-weather-divider">·</text>
+                <text class="drawer-weather-score">{{activePixel.moodScore}}分</text>
+              </view>
+            </view>
+            <view wx:if="{{activePixel.tagText}}" class="drawer-tags">🏷️ {{activePixel.tagText}}</view>
+            <view class="drawer-text">“{{activePixel.moodText || '那一天没有写下多余的话语，但时光记住了天晴。'}}”</view>
+          </view>
+          <view wx:elif="{{activePixel}}" class="drawer-inner is-empty">
+            <text class="empty-date">📅 {{activePixel.date}}</text>
+            <text class="empty-tip">🌱 这一天静候点亮，未留下心情痕迹</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 2. 🔍 治愈密码：标签与情绪因果分析 (What Heals You) -->
+      <view class="section-title">
+        <text class="section-badge">🔍</text>
+        <text>治愈密码 · 情绪因果洞察</text>
+      </view>
+      <view class="healing-card journal-card">
+        <view class="healing-intro">
+          <text class="healing-tag washi-tag">WHAT HEALS YOU</text>
+          <view class="healing-title">生活场景与心晴充放电关联</view>
+        </view>
+
+        <!-- 治愈榜 TOP 3 -->
+        <view wx:if="{{tagCorrelation.hasData}}" class="healing-rank-list">
+          <view wx:for="{{tagCorrelation.rankings}}" wx:key="tag" class="healing-rank-item">
+            <view class="rank-badge-pill rank-badge-{{index + 1}}">
+              <text class="rank-medal-text">{{item.badge}}</text>
+            </view>
+            <view class="rank-main">
+              <view class="rank-top-line">
+                <text class="rank-tag-name">#{{item.tag}}</text>
+                <text class="rank-score">平均 {{item.average}}分 · 放晴率 {{item.sunnyRate}}%</text>
+              </view>
+              <view class="rank-track">
+                <view class="rank-fill" style="width: {{item.sunnyRate}}%;"></view>
+              </view>
+            </view>
+            <text class="rank-count">{{item.count}}次</text>
+          </view>
+
+          <!-- 疲惫预警（双子便签之：能量消耗关注） -->
+          <view wx:if="{{tagCorrelation.drainWarning}}" class="twin-insight-card drain-card">
+            <view class="twin-badge-wrap">
+              <text class="twin-badge badge-warning">⚠️ 能量消耗关注</text>
+            </view>
+            <view class="twin-insight-text">{{tagCorrelation.drainWarning.tip}}</view>
+          </view>
+
+          <!-- 智能自愈金句总结（双子便签之：自愈充电洞察） -->
+          <view class="twin-insight-card healing-card-note">
+            <view class="twin-badge-wrap">
+              <text class="twin-badge badge-healing">💡 自愈充电洞察</text>
+            </view>
+            <view class="twin-insight-text">{{tagCorrelation.insightSummary}}</view>
+          </view>
+        </view>
+        <view wx:else class="healing-empty">
+          <text>记录包含标签的日签后，自动生成你的治愈生活榜。</text>
+        </view>
+      </view>
+
+      <!-- 3. ⏰ 七日情绪晴雨时钟 (Weekly Rhythm) -->
+      <view class="section-title">
+        <text class="section-badge">⏰</text>
+        <text>七日节律 · 晴雨时钟</text>
+      </view>
+      <view class="rhythm-card journal-card">
+        <view class="rhythm-pills-row">
+          <view class="rhythm-pill peak-pill">
+            <view class="pill-badge">
+              <text class="pill-icon">⚡</text>
+              <text class="pill-tag">能量波峰</text>
+            </view>
+            <text class="pill-val">{{weekdayRhythm.peakDay}}</text>
+          </view>
+          <view class="rhythm-pill valley-pill">
+            <view class="pill-badge">
+              <text class="pill-icon">🌙</text>
+              <text class="pill-tag">电量谷底</text>
+            </view>
+            <text class="pill-val">{{weekdayRhythm.valleyDay}}</text>
+          </view>
+        </view>
+
+        <!-- 7 列微气象柱状图 -->
+        <view class="rhythm-chart">
+          <view wx:for="{{weekdayRhythm.items}}" wx:key="name" class="rhythm-col {{item.isPeak ? 'col-peak' : ''}} {{item.isValley ? 'col-valley' : ''}} {{item.count === 0 ? 'col-empty' : ''}}">
+            <view class="col-head-meta">
+              <text wx:if="{{item.count > 0}}" class="col-symbol">{{item.symbol}}</text>
+              <text wx:else class="col-empty-dot">·</text>
+              <text class="col-score {{item.count === 0 ? 'score-empty' : ''}}">{{item.count > 0 ? item.average : '—'}}</text>
+            </view>
+            <view class="col-bar-track">
+              <view wx:if="{{item.count > 0}}" class="col-bar-fill" style="height: {{item.heightPercent}}%;"></view>
+            </view>
+            <text class="col-name">{{item.name}}</text>
+          </view>
+        </view>
+
+        <!-- 节律手签便笺 -->
+        <view class="rhythm-note-strip">
+          <view class="strip-badge-wrap">
+            <text class="strip-badge">💌 节律心语</text>
+          </view>
+          <view class="strip-text">{{weekdayRhythm.rhythmNote}}</view>
+        </view>
+      </view>
+
+      <!-- 4. 🌙 月度回顾与气象手记 (融合卡片) -->
+      <view class="section-title">
+        <text class="section-badge">🌙</text>
+        <text>月度回顾 · 气象手记</text>
+      </view>
+
+      <view class="review-card">
+        <!-- 装饰标头 -->
+        <view class="review-head-row">
+          <view class="review-badge washi-tag">MONTHLY REVIEW & NOTE</view>
+          <view class="review-date-tag">已记录 {{totalDays}} 天</view>
+        </view>
+
+        <view class="review-title">{{review.monthLabel}} · 月度治愈全景</view>
+
+        <!-- 3 格核心数据 Bento -->
+        <view class="review-grid">
+          <view class="review-metric">
+            <text class="review-value">{{review.count}}</text>
+            <text class="review-label">本月篇数</text>
+          </view>
+          <view class="review-metric">
+            <text class="review-value">{{review.average}}</text>
+            <text class="review-label">平均心晴 / 5</text>
+          </view>
+          <view class="review-metric">
+            <text class="review-value">{{review.topWeather}}</text>
+            <text class="review-label">常驻气象</text>
+          </view>
+        </view>
+
+        <!-- 深度融合的气象手记与岁月寄语便签 -->
+        <view class="review-note-box">
+          <view class="review-note-quote">
+            “目前已汇聚 <text class="highlight-gold">{{totalDays}}</text> 天情绪微光，本月最开心的一天是 <text class="highlight-gold">{{review.topDay}}</text>，最常陪伴的生活标签是 <text class="highlight-cyan">#{{topTag}}</text>。生活明朗，继续把日子里的小确幸悉心收藏。”
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="stats-empty glass-panel">
+      <view class="empty-icon">🌱</view>
+      <view class="empty-title">还没有心情气象记录</view>
+      <view class="empty-text">写下第一篇心情日签后，这里会自动生成属于你的光感情绪图谱与月份对比。</view>
+    </view>
+
+  </view>
+</scroll-view>

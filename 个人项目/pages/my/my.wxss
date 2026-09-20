@@ -1,0 +1,548 @@
+page {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.my-scroll {
+  height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.my-page {
+  min-height: 100vh;
+  padding: 24rpx 28rpx calc(150rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  color: var(--color-text-main);
+}
+
+/* 个人手帐档案卡片 */
+.profile-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 38rpx 30rpx 32rpx;
+  border-radius: var(--border-radius-lg);
+  background: linear-gradient(135deg, rgba(230, 246, 245, 0.92) 0%, rgba(254, 246, 238, 0.88) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: var(--color-glass-shadow);
+}
+
+/* 装饰性胶带 */
+.washi-tape-strip {
+  position: absolute;
+  top: -10rpx;
+  height: 24rpx;
+  border-radius: 4rpx;
+  background: rgba(249, 202, 83, 0.55);
+  box-shadow: 0 2rpx 6rpx rgba(249, 202, 83, 0.2);
+  transform: rotate(-1.5deg);
+  z-index: 2;
+}
+
+.washi-tape-left {
+  left: 36rpx;
+  width: 120rpx;
+}
+
+.washi-tape-center {
+  left: 50%;
+  width: 140rpx;
+  margin-left: -70rpx;
+}
+
+.washi-tape-warm {
+  background: rgba(243, 156, 107, 0.45);
+  box-shadow: 0 2rpx 6rpx rgba(243, 156, 107, 0.2);
+  transform: rotate(2deg);
+}
+
+/* 拍立得相框头像 */
+.avatar-polaroid {
+  position: relative;
+  width: 132rpx;
+  height: 132rpx;
+  padding: 6rpx;
+  border-radius: 14rpx;
+  background: #FFFFFF;
+  box-shadow: 0 8rpx 24rpx rgba(20, 50, 55, 0.12);
+  flex-shrink: 0;
+  transform: rotate(-1.5deg);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+  display: block;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+  background: var(--color-primary-gradient);
+  color: #FFFFFF;
+  font-size: 52rpx;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-camera-seal {
+  position: absolute;
+  right: -8rpx;
+  bottom: -8rpx;
+  width: 42rpx;
+  height: 42rpx;
+  background: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.15);
+  border: 2rpx solid #FAF7F2;
+}
+
+/* 档案信息排版 */
+.profile-copy {
+  margin-left: 28rpx;
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nickname-box {
+  display: flex;
+  align-items: center;
+  max-width: 280rpx;
+}
+
+.nickname-text {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+  letter-spacing: 0.5rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nickname-edit-icon {
+  margin-left: 10rpx;
+  font-size: 24rpx;
+  color: var(--color-primary);
+}
+
+.edit-profile-btn {
+  font-size: 22rpx;
+  color: var(--color-primary);
+  background: rgba(23, 131, 148, 0.12);
+  border: 1px solid rgba(23, 131, 148, 0.24);
+  padding: 8rpx 20rpx;
+  border-radius: 999rpx;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.profile-role-tag {
+  margin-top: 10rpx;
+  display: inline-flex;
+  font-size: 20rpx;
+  background: rgba(244, 162, 54, 0.14);
+  color: #B56D0E;
+}
+
+.mood-id-row {
+  display: flex;
+  align-items: center;
+  margin-top: 12rpx;
+  width: 100%;
+}
+
+.mood-id-label {
+  font-size: 22rpx;
+  color: var(--color-text-sub);
+  flex-shrink: 0;
+}
+
+.mood-id-value {
+  font-size: 24rpx;
+  color: var(--color-primary);
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 240rpx;
+}
+
+.copy-tag {
+  margin-left: 12rpx;
+  padding: 4rpx 14rpx;
+  background: rgba(23, 131, 148, 0.12);
+  color: var(--color-primary);
+  font-size: 20rpx;
+  border-radius: 999rpx;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.cloud-status {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+  color: var(--color-text-tertiary);
+  font-size: 21rpx;
+}
+
+.status-beacon {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: #C9A36A;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+}
+
+.status-beacon.online {
+  background: #38A477;
+  box-shadow: 0 0 10rpx rgba(56, 164, 119, 0.6);
+}
+
+/* 快捷统计 Bento 便签卡 */
+.metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 24rpx;
+  padding: 28rpx 0;
+  border-radius: var(--border-radius-md);
+}
+
+.metric {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.metric-value {
+  color: var(--color-primary);
+  font-size: 44rpx;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.metric-label {
+  margin-top: 8rpx;
+  color: var(--color-text-sub);
+  font-size: 23rpx;
+  font-weight: 600;
+}
+
+.metric-divider {
+  width: 2rpx;
+  height: 58rpx;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* 菜单列表 - 手帐书签列 */
+.menu-list {
+  margin-top: 24rpx;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  min-height: 124rpx;
+  padding: 0 28rpx;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.04);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-icon-seal {
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.icon-friends {
+  background: rgba(23, 131, 148, 0.12);
+}
+
+.icon-calendar {
+  background: rgba(249, 202, 83, 0.2);
+}
+
+.icon-stats {
+  background: rgba(229, 107, 145, 0.15);
+}
+
+.menu-copy {
+  flex: 1;
+}
+
+.menu-title {
+  display: block;
+  font-size: 29rpx;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.menu-subtitle {
+  display: block;
+  font-size: 22rpx;
+  color: var(--color-text-sub);
+  margin-top: 4rpx;
+}
+
+.menu-arrow {
+  color: var(--color-text-tertiary);
+  font-size: 38rpx;
+  font-weight: 300;
+}
+
+/* 账号操作 */
+.account-actions {
+  margin-top: 32rpx;
+}
+
+.connect-btn {
+  height: 88rpx;
+  border-radius: var(--border-radius-full);
+  color: #FFFFFF;
+  background: var(--color-primary-gradient);
+  font-size: 28rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 20rpx rgba(23, 131, 148, 0.3);
+}
+
+.logout-button {
+  height: 84rpx;
+  border-radius: var(--border-radius-full);
+  color: #C64545;
+  border: 1px solid rgba(198, 69, 69, 0.25);
+  background: #FFFFFF;
+  font-size: 26rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-hint {
+  margin-top: 24rpx;
+  font-size: 22rpx;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+.my-note {
+  margin-top: 44rpx;
+  text-align: center;
+}
+
+.my-note-title {
+  font-size: 26rpx;
+  font-weight: 800;
+  color: var(--color-text-sub);
+  letter-spacing: 1rpx;
+}
+
+.my-note-sub {
+  font-size: 22rpx;
+  color: var(--color-text-tertiary);
+  margin-top: 6rpx;
+}
+
+/* 完善个人资料弹窗 Modal */
+.edit-modal-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+.edit-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 620rpx;
+  border-radius: var(--border-radius-lg);
+  background: #FFFFFF;
+  padding: 48rpx 36rpx 36rpx;
+  box-sizing: border-box;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+  text-align: center;
+}
+
+.modal-desc {
+  font-size: 22rpx;
+  color: var(--color-text-sub);
+  text-align: center;
+  margin-top: 8rpx;
+}
+
+.modal-section {
+  margin-top: 32rpx;
+}
+
+.modal-label {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-bottom: 12rpx;
+}
+
+.modal-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.modal-avatar-polaroid {
+  width: 120rpx;
+  height: 120rpx;
+  padding: 6rpx;
+  background: #FFFFFF;
+  border-radius: 12rpx;
+  box-shadow: 0 4rpx 14rpx rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.modal-avatar-preview {
+  width: 100%;
+  height: 100%;
+  border-radius: 8rpx;
+  display: block;
+}
+
+.modal-avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-gradient);
+  color: #FFFFFF;
+  font-size: 48rpx;
+  font-weight: 700;
+}
+
+.modal-avatar-actions {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.modal-sub-btn {
+  height: 60rpx;
+  border-radius: 999rpx;
+  font-size: 23rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F4EFE6;
+  color: var(--color-text-main);
+  margin: 0;
+  padding: 0;
+  font-weight: 600;
+}
+
+.modal-sub-btn.primary {
+  background: var(--color-primary-gradient);
+  color: #FFFFFF;
+  box-shadow: 0 4rpx 12rpx rgba(23, 131, 148, 0.25);
+}
+
+.modal-input-wrap {
+  margin-top: 10rpx;
+  border: 1px solid rgba(23, 131, 148, 0.2);
+  border-radius: var(--border-radius-sm);
+  padding: 0 20rpx;
+  background: #FAF7F2;
+}
+
+.modal-nickname-input {
+  height: 80rpx;
+  font-size: 27rpx;
+  color: var(--color-text-main);
+}
+
+.modal-placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.modal-input-tip {
+  font-size: 20rpx;
+  color: var(--color-primary);
+  margin-top: 10rpx;
+  line-height: 1.4;
+}
+
+.modal-btn-row {
+  display: flex;
+  gap: 18rpx;
+  margin-top: 40rpx;
+}
+
+.modal-action-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 999rpx;
+  font-size: 27rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-action-btn.cancel {
+  background: #F2EFE9;
+  color: var(--color-text-sub);
+}
+
+.modal-action-btn.confirm {
+  background: var(--color-primary-gradient);
+  color: #FFFFFF;
+  box-shadow: 0 6rpx 18rpx rgba(23, 131, 148, 0.28);
+}

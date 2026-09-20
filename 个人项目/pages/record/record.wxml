@@ -1,0 +1,169 @@
+<navigation-bar title="{{pageTitle}}" back="{{true}}" color="#153940" background="#F3F7F7"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y enhanced show-scrollbar="{{false}}">
+  <view class="page-shell record-shell">
+    
+    <!-- 1. 手帐日期便签条 -->
+    <view class="date-stamp-bar">
+      <view class="date-stamp-left">
+        <view class="calendar-icon-box">📅</view>
+        <view class="date-stamp-text">
+          <view class="date-stamp-caption">记录日期</view>
+          <view class="date-stamp-value">{{dateText}}</view>
+        </view>
+      </view>
+      <picker
+        mode="date"
+        value="{{date}}"
+        start="{{minDate}}"
+        end="{{maxDate}}"
+        bindchange="onDateChange"
+      >
+        <view class="date-stamp-picker-btn tap-active">切换日期 ✎</view>
+      </picker>
+    </view>
+
+    <!-- 2. 今天是什么心情天气？（6 枚光感心情印章） -->
+    <view class="section-title-wrap">
+      <view class="section-main-title">
+        <view class="section-dot"></view>
+        <text>今天是什么心情天气？</text>
+      </view>
+      <text class="section-sub-title">选一枚今日印章</text>
+    </view>
+
+    <view class="weather-stamp-grid">
+      <view
+        wx:for="{{weatherTypes}}"
+        wx:key="key"
+        class="weather-stamp {{selectedWeather === item.key ? 'active weather-' + item.key : ''}} tap-active"
+        data-key="{{item.key}}"
+        bindtap="selectWeather"
+      >
+        <view class="stamp-icon-wrap">
+          <text class="stamp-icon">{{item.symbol}}</text>
+        </view>
+        <text class="stamp-label">{{item.label}}</text>
+        <text class="stamp-desc">{{item.description}}</text>
+        <view wx:if="{{selectedWeather === item.key}}" class="stamp-check">✓</view>
+      </view>
+    </view>
+
+    <!-- 3. 心情强度（能量星级胶囊） -->
+    <view class="section-title-wrap">
+      <view class="section-main-title">
+        <view class="section-dot"></view>
+        <text>心情强度</text>
+      </view>
+      <view class="score-badge">{{moodScore}} / 5 分</view>
+    </view>
+
+    <view class="score-pill-track">
+      <view
+        wx:for="{{scoreOptions}}"
+        wx:key="value"
+        class="score-pill-item {{item.value <= moodScore ? 'score-active' : ''}} tap-active"
+        data-score="{{item.value}}"
+        bindtap="selectMoodScore"
+      >
+        <text class="score-star-symbol">★</text>
+        <text class="score-pill-text">{{item.label}}</text>
+      </view>
+    </view>
+
+    <!-- 4. 给今天留下一句话（手帐信纸便签） -->
+    <view class="section-title-wrap">
+      <view class="section-main-title">
+        <view class="section-dot"></view>
+        <text>给今天留下一句话</text>
+      </view>
+      <text class="section-sub-title">字字皆是生活</text>
+    </view>
+
+    <view class="journal-paper-box">
+      <view class="paper-lines-bg"></view>
+      <textarea
+        class="journal-textarea"
+        value="{{moodText}}"
+        maxlength="60"
+        placeholder="写下一句微小的心情、见到的风景或发生的故事..."
+        placeholder-class="journal-placeholder"
+        bindinput="inputMood"
+      ></textarea>
+      <view class="journal-word-count">{{moodText.length}} / 60</view>
+    </view>
+
+    <!-- 5. 生活照片（拍立得相册） -->
+    <view class="section-title-wrap">
+      <view class="section-main-title">
+        <view class="section-dot"></view>
+        <text>生活切片</text>
+      </view>
+      <text class="section-sub-title">{{images.length}} / 3 张照片</text>
+    </view>
+
+    <view class="polaroid-album-row">
+      <view wx:for="{{images}}" wx:key="path" class="polaroid-item">
+        <view class="polaroid-tape"></view>
+        <view class="polaroid-frame">
+          <image class="polaroid-pic" src="{{item.path}}" mode="aspectFill" data-index="{{index}}" bindtap="previewImage"></image>
+        </view>
+        <view class="polaroid-del-btn" data-index="{{index}}" catchtap="removeImage">✕</view>
+      </view>
+      
+      <view wx:if="{{images.length < 3}}" class="polaroid-add-box tap-active" bindtap="chooseImages">
+        <view class="polaroid-add-plus">＋</view>
+        <view class="polaroid-add-text">贴张照片</view>
+      </view>
+    </view>
+
+    <!-- 6. 选择生活标签（和纸贴纸系统） -->
+    <view class="section-title-wrap">
+      <view class="section-main-title">
+        <view class="section-dot"></view>
+        <text>生活标签</text>
+      </view>
+      <text class="section-sub-title">{{selectedTags.length}} / 4 已选</text>
+    </view>
+
+    <view class="tag-group-container">
+      <view wx:for="{{tagGroups}}" wx:key="name" class="washi-group-card">
+        <view class="washi-group-header">
+          <text class="washi-group-title">{{item.name}}</text>
+        </view>
+        <view class="washi-tag-wrap">
+          <view
+            wx:for="{{item.options}}"
+            wx:key="label"
+            class="washi-tag-chip {{item.selected ? 'chip-selected' : ''}} tap-active"
+            data-tag="{{item.label}}"
+            bindtap="selectTag"
+          >
+            <text class="chip-icon">{{item.icon}}</text>
+            <text class="chip-label">{{item.label}}</text>
+          </view>
+          <view wx:if="{{item.name === '自定义'}}" class="washi-tag-chip chip-add tap-active" bindtap="toggleCustomTag">
+            <text>＋ 自定义</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{showCustomTagInput}}" class="custom-tag-modal-row">
+      <input class="custom-tag-input" value="{{customTagInput}}" maxlength="8" placeholder="写下自定义标签（最多8字）" bindinput="inputCustomTag"></input>
+      <view class="custom-tag-confirm-btn tap-active" bindtap="addCustomTag">添加</view>
+    </view>
+
+    <!-- 7. 保存与删除操作 -->
+    <view class="record-action-group">
+      <button class="save-record-btn tap-active" bindtap="saveRecord">
+        <text class="save-btn-icon">✎</text>
+        <text>{{isEdit ? '保存修改并封存' : '存入心情手帐'}}</text>
+      </button>
+      <button wx:if="{{isEdit}}" class="delete-record-btn tap-active" bindtap="removeRecord">
+        撕下这一页 (删除)
+      </button>
+    </view>
+
+  </view>
+</scroll-view>
+

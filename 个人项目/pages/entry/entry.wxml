@@ -1,0 +1,9 @@
+<view class="entry-page" bindtap="enterHome">
+  <image class="entry-background" src="/images/loading/mood-weather-station.jpg" mode="aspectFill"></image>
+  <view class="entry-shade"></view>
+  <view class="entry-brand {{entering ? 'entry-brand-entering' : ''}}">
+    <view class="entry-title">心情天气站</view>
+    <view class="entry-slogan">把每天的心情，收藏成天气</view>
+    <view class="entry-line"></view>
+  </view>
+</view>

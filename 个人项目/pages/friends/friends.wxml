@@ -1,0 +1,301 @@
+<navigation-bar title="好友空间" back="true" color="#2C3E42" background="#FAF7F2"></navigation-bar>
+<scroll-view class="friends-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+  <view class="friends-page">
+    <!-- 顶部手帐风格双 Tab 切换 -->
+    <view class="friends-tabs-header glass-panel">
+      <view class="tab-item {{activeTab === 'feed' ? 'active' : ''}}" data-tab="feed" bindtap="switchTab">
+        <text class="tab-icon">📖</text>
+        <text class="tab-label">晴雨动态</text>
+      </view>
+      <view class="tab-item {{activeTab === 'friends' ? 'active' : ''}}" data-tab="friends" bindtap="switchTab">
+        <text class="tab-icon">👥</text>
+        <text class="tab-label">友邻名册</text>
+        <view wx:if="{{pendingRequestCount > 0}}" class="tab-badge-count">{{pendingRequestCount}}</view>
+      </view>
+    </view>
+
+    <!-- 离线提示 -->
+    <view wx:if="{{!cloudReady}}" class="offline-panel glass-panel">
+      <text class="offline-icon">☁️</text>
+      <text>云端服务未连接，好友空间暂不可用</text>
+    </view>
+
+    <!-- Tab 1: 晴雨动态流 -->
+    <block wx:elif="{{activeTab === 'feed'}}">
+      <view class="section-block tab-feed-block">
+        <view class="feed-header-tip">
+          <text class="feed-tip-text">🍃 晴雨生活日签</text>
+          <text class="feed-tip-count" wx:if="{{feed.length}}">{{feed.length}} 篇手帖</text>
+        </view>
+
+        <view wx:if="{{feed.length}}" class="feed-list">
+          <view wx:for="{{feed}}" wx:key="_id" class="feed-item journal-card {{item.isMine ? 'my-feed-card' : ''}}">
+            <view class="feed-head">
+              <view class="friend-avatar {{item.isMine ? 'my-avatar-bg' : ''}} tap-active" catchtap="openUserCard" data-user="{{item.author}}">
+                <image wx:if="{{item.author.avatarUrl}}" class="avatar-img-circle" src="{{item.author.avatarUrl}}" mode="aspectFill" binderror="onFeedAvatarError" data-index="{{index}}"></image>
+                <text wx:if="{{!item.author.avatarUrl}}">{{item.avatarText || '心'}}</text>
+              </view>
+              <view class="feed-author-meta tap-active" catchtap="openUserCard" data-user="{{item.author}}">
+                <view class="author-name-row">
+                  <text class="feed-author">{{item.author.nickname}}</text>
+                  <text wx:if="{{item.isMine}}" class="my-badge">我的手帖</text>
+                </view>
+                <text class="feed-date">{{item.dateText}}</text>
+              </view>
+              <view class="feed-weather-seal">
+                <text class="feed-weather">{{item.weatherInfo.symbol}}</text>
+              </view>
+            </view>
+
+            <view class="feed-text">{{item.moodText}}</view>
+
+            <view class="feed-tags" wx:if="{{item.tagText}}">
+              <text class="washi-tag"># {{item.weatherInfo.label}} · {{item.tagText}}</text>
+            </view>
+
+            <view wx:if="{{item.images.length}}" class="feed-polaroid polaroid-frame tap-active" data-id="{{item._id}}" data-current="{{item.images[0]}}" catchtap="previewImages">
+              <image class="feed-image" src="{{item.images[0]}}" mode="aspectFill" lazy-load="true" binderror="onFeedImageError" data-index="{{index}}"></image>
+            </view>
+
+            <!-- 互动操作行 -->
+            <view class="feed-actions">
+              <button class="feed-action {{item.liked ? 'liked' : ''}} tap-active" data-id="{{item._id}}" bindtap="toggleLike">
+                {{item.liked ? '❤️ 已赞' : '🤍 点赞'}} {{item.likeCount || 0}}
+              </button>
+              <text class="comment-count">💬 留言 {{item.comments.length || item.commentCount || 0}}</text>
+            </view>
+
+            <!-- 点赞人员名单展示 -->
+            <view wx:if="{{item.likeUserNamesText}}" class="like-users-panel">
+              <text class="like-users-heart">❤️</text>
+              <text class="like-users-list">{{item.likeUserNamesText}} 赞了这篇手帖</text>
+            </view>
+
+            <!-- 日系手帐便签留言板 -->
+            <view wx:if="{{item.comments && item.comments.length}}" class="comment-board">
+              <view wx:for="{{item.comments}}" wx:for-item="comment" wx:for-index="commentIdx" wx:key="_id" class="comment-bubble-item tap-active" bindlongpress="onLongPressComment" data-comment-id="{{comment._id}}" data-feed-index="{{index}}" data-comment-index="{{commentIdx}}" data-is-mine="{{comment.isMine}}" data-record-is-mine="{{item.isMine}}">
+                <view class="comment-avatar-touch" catchtap="openUserCard" data-user="{{comment.author}}">
+                  <image wx:if="{{comment.author.avatarUrl}}" class="comment-avatar-img" src="{{comment.author.avatarUrl}}" mode="aspectFill" binderror="onCommentAvatarError" data-feed-index="{{index}}" data-comment-index="{{commentIdx}}"></image>
+                  <view wx:else class="comment-avatar-text">{{comment.author.avatarText || (comment.author.nickname ? comment.author.nickname[0] : '心')}}</view>
+                </view>
+                <view class="comment-content-wrap">
+                  <text class="comment-author" catchtap="openUserCard" data-user="{{comment.author}}">{{comment.author.nickname}}：</text>
+                  <text class="comment-text">{{comment.text}}</text>
+                </view>
+                <view wx:if="{{comment.isMine || item.isMine}}" class="comment-del-chip tap-active" catchtap="onTapDeleteCommentBtn" data-comment-id="{{comment._id}}" data-feed-index="{{index}}" data-comment-index="{{commentIdx}}">
+                  <text class="comment-del-icon">✕</text>
+                </view>
+              </view>
+            </view>
+
+            <!-- 留言输入行 -->
+            <view class="comment-row">
+              <input class="comment-input" value="{{item.commentInput}}" data-id="{{item._id}}" bindinput="inputComment" placeholder="写下一句温暖的留言..." confirm-type="send" bindconfirm="addComment"/>
+              <button class="comment-btn tap-active" data-id="{{item._id}}" bindtap="addComment">发送</button>
+            </view>
+          </view>
+        </view>
+
+        <!-- 空态卡片 -->
+        <view wx:else class="empty-feed glass-panel">
+          <text class="empty-icon">🍃</text>
+          <text class="empty-title">还没有好友动态</text>
+          <text class="empty-sub">前往「友邻名册」添加好友，分享每天的心情手帖吧</text>
+          <button class="go-friends-btn tap-active" data-tab="friends" bindtap="switchTab">去友邻名册添加好友</button>
+        </view>
+      </view>
+    </block>
+
+    <!-- Tab 2: 友邻名册管理 -->
+    <block wx:elif="{{activeTab === 'friends'}}">
+      <!-- 我的印章号卡片 -->
+      <view class="profile-strip glass-panel">
+        <view class="profile-content">
+          <view class="profile-header-row">
+            <text class="washi-tag">💌 我的印章号</text>
+            <text class="profile-tip">互加好友互看晴雨手帖 ✨</text>
+          </view>
+          <view class="profile-id-row">
+            <text class="profile-id">{{moodId || '未生成'}}</text>
+            <view class="copy-badge tap-active" bindtap="copyMoodId">
+              <text class="copy-icon">📋</text>
+              <text class="copy-text">复制</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 搜索添加好友 -->
+      <view class="section-block">
+        <view class="section-title"><text class="section-badge">🔍</text> 添加好友</view>
+        <view class="search-row">
+          <input class="search-input" value="{{searchValue}}" bindinput="inputSearch" placeholder="输入好友印章号，例如 MW..." confirm-type="search" bindconfirm="searchFriend"/>
+          <button class="search-btn tap-active" bindtap="searchFriend" loading="{{loading}}" disabled="{{loading}}">搜索</button>
+        </view>
+        <view wx:if="{{searchUser}}" class="search-result journal-card">
+          <view class="result-avatar">
+            <image wx:if="{{searchUser.avatarUrl}}" class="avatar-img-circle" src="{{searchUser.avatarUrl}}" mode="aspectFill"></image>
+            <text wx:if="{{!searchUser.avatarUrl}}">{{searchUser.avatarText || '心'}}</text>
+          </view>
+          <view class="result-info">
+            <text class="result-name">{{searchUser.nickname}}</text>
+            <text class="result-id">印章号: {{searchUser.moodId}}</text>
+          </view>
+          <button class="small-button tap-active" bindtap="addFriend" loading="{{adding}}" disabled="{{adding}}">加好友</button>
+        </view>
+        <view wx:elif="{{searchValue && !loading}}" class="hint-text">没有找到这个印章号的好友</view>
+      </view>
+
+      <!-- 好友申请箱 -->
+      <view wx:if="{{requests.length}}" class="section-block">
+        <view class="section-title">
+          <text class="section-badge">📬</text>
+          <text>好友申请</text>
+          <text class="section-count washi-tag">{{requests.length}} 条</text>
+        </view>
+        <view wx:for="{{requests}}" wx:key="id" class="request-item journal-card">
+          <view class="request-avatar tap-active" catchtap="openUserCard" data-user="{{item.user}}">
+            <image wx:if="{{item.user.avatarUrl}}" class="avatar-img-circle" src="{{item.user.avatarUrl}}" mode="aspectFill" binderror="onRequestAvatarError" data-index="{{index}}"></image>
+            <text wx:if="{{!item.user.avatarUrl}}">{{item.avatarText || '心'}}</text>
+          </view>
+          <view class="request-info">
+            <view class="request-name-row">
+              <text class="request-name tap-active" catchtap="openUserCard" data-user="{{item.user}}">{{item.user.nickname}}</text>
+              <text class="request-direction-tag {{item.direction === 'received' ? 'tag-received' : 'tag-sent'}}">{{item.direction === 'received' ? '收到' : '已发'}}</text>
+            </view>
+            <view wx:if="{{item.user.moodId}}" class="request-id-row">
+              <text class="request-mood-id" user-select>印章号: {{item.user.moodId}}</text>
+            </view>
+            <text class="request-meta">{{item.direction === 'received' ? '申请添加你为好友' : '等待对方处理中'}}</text>
+          </view>
+          <view wx:if="{{item.direction === 'received' && item.status === 'pending'}}" class="request-actions">
+            <button class="action-btn btn-accept tap-active" data-id="{{item.id}}" data-accept="true" bindtap="respondRequest" disabled="{{responding}}">同意</button>
+            <button class="action-btn btn-reject tap-active" data-id="{{item.id}}" data-accept="false" bindtap="respondRequest" disabled="{{responding}}">拒绝</button>
+          </view>
+          <view wx:else class="request-status-badge status-{{item.status}}">
+            <text>{{item.status === 'accepted' ? '✓ 已同意' : item.status === 'rejected' ? '✕ 已拒绝' : '⏳ 待处理'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 我的好友列表 -->
+      <view class="section-block">
+        <view class="section-title">
+          <text class="section-badge">👥</text>
+          <text>我的好友</text>
+          <text class="section-count washi-tag">{{friends.length}} 人</text>
+        </view>
+        <view wx:if="{{friends.length}}" class="friends-cards-list">
+          <view wx:for="{{friends}}" wx:key="moodId" class="friend-card journal-card" bindlongpress="onLongPressFriendCard" data-user="{{item}}">
+            <view class="friend-card-left">
+              <view class="friend-avatar tap-active" catchtap="openUserCard" data-user="{{item}}">
+                <image wx:if="{{item.avatarUrl}}" class="avatar-img-circle" src="{{item.avatarUrl}}" mode="aspectFill" binderror="onFriendAvatarError" data-index="{{index}}"></image>
+                <text wx:if="{{!item.avatarUrl}}">{{item.avatarText || '心'}}</text>
+              </view>
+              <view class="friend-info">
+                <text class="friend-name tap-active" catchtap="openUserCard" data-user="{{item}}">{{item.nickname}}</text>
+                <view class="friend-id-badge" data-id="{{item.moodId}}" catchtap="copyMoodIdByVal">
+                  <text class="friend-mood-id">印章号: {{item.moodId}}</text>
+                </view>
+              </view>
+            </view>
+            <view class="friend-card-actions">
+              <view class="friend-copy-btn tap-active" data-id="{{item.moodId}}" catchtap="copyMoodIdByVal">
+                <text class="copy-icon">📋</text>
+                <text class="copy-label">复制</text>
+              </view>
+              <view class="friend-del-btn tap-active" data-user="{{item}}" catchtap="onTapDeleteFriendFromList">
+                <text class="del-label">解除</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="empty-friends-hint glass-panel">
+          <text>目前还没有已添加的好友，快去分享你的印章号吧 ✨</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</scroll-view>
+
+<!-- 友邻名片弹窗 (日系手帐风) -->
+<view wx:if="{{showUserCard}}" class="user-card-mask {{showUserCard ? 'card-mask-show' : ''}}" catchtouchmove="preventTouchMove" bindtap="closeUserCard">
+  <view class="user-card-dialog washi-modal" catchtap="stopBubble">
+    <!-- 手帐和纸胶带装饰 -->
+    <view class="modal-tape modal-tape-top"></view>
+    <view class="user-card-close tap-active" catchtap="closeUserCard">✕</view>
+
+    <!-- 名片主体 -->
+    <view class="user-card-body">
+      <!-- 头像区域 -->
+      <view class="user-card-avatar-wrap">
+        <image wx:if="{{userCard.avatarUrl}}" class="user-card-avatar-img" src="{{userCard.avatarUrl}}" mode="aspectFill" binderror="onCardAvatarError"></image>
+        <view wx:else class="user-card-avatar-text">{{userCard.avatarText || '心'}}</view>
+        <view class="avatar-ring"></view>
+      </view>
+
+      <!-- 昵称 -->
+      <view class="user-card-name-row">
+        <text class="user-card-name">{{userCard.nickname}}</text>
+        <text wx:if="{{userCard.relation === 'self'}}" class="card-tag tag-self">我自己</text>
+        <text wx:elif="{{userCard.relation === 'friend'}}" class="card-tag tag-friend">已是好友</text>
+      </view>
+
+      <!-- 印章号 -->
+      <view wx:if="{{userCard.moodId}}" class="user-card-id-box tap-active" catchtap="copyCardMoodId">
+        <text class="id-box-label">印章号</text>
+        <text class="id-box-val">{{userCard.moodId}}</text>
+        <view class="id-copy-chip">
+          <text class="chip-icon">📋</text>
+          <text class="chip-text">复制</text>
+        </view>
+      </view>
+
+      <!-- 状态描述 -->
+      <view class="user-card-desc">
+        <text wx:if="{{userCard.relation === 'self'}}">这是你在晴雨手帐里的个人名片 ✨</text>
+        <text wx:elif="{{userCard.relation === 'friend'}}">你们已经结为友邻，可在动态中互相留言互动 🌱</text>
+        <text wx:elif="{{userCard.relation === 'pending_sent'}}">好友申请已送达对方，等待对方在友邻名册中确认 ⏳</text>
+        <text wx:elif="{{userCard.relation === 'pending_received'}}">对方此前向你发来了好友申请，点击即可直接结伴 💌</text>
+        <text wx:else>在同一个温暖的手帖下相遇，结为友邻一起记录生活吧 🍃</text>
+      </view>
+
+      <!-- 底部操作按钮 -->
+      <view class="user-card-action-bar">
+        <block wx:if="{{userCard.relation === 'self'}}">
+          <view class="card-btn btn-disabled">
+            <text class="btn-icon">✨</text>
+            <text>这是你自己</text>
+          </view>
+        </block>
+
+        <block wx:elif="{{userCard.relation === 'friend'}}">
+          <view class="card-btn-row">
+            <view class="card-btn btn-friend-status">
+              <text class="btn-icon">🌱</text>
+              <text>已是友邻</text>
+            </view>
+            <view class="card-btn btn-delete-friend tap-active" catchtap="onTapDeleteFriendFromCard">
+              <text class="btn-icon">✕</text>
+              <text>解除关系</text>
+            </view>
+          </view>
+        </block>
+
+        <block wx:elif="{{userCard.relation === 'pending_sent'}}">
+          <view class="card-btn btn-pending">
+            <text class="btn-icon">⏳</text>
+            <text>申请等待同意中</text>
+          </view>
+        </block>
+
+        <block wx:else>
+          <button class="card-btn btn-add tap-active" catchtap="addFriendFromCard" loading="{{cardLoading}}" disabled="{{cardLoading}}">
+            <text class="btn-icon">💌</text>
+            <text>{{userCard.relation === 'pending_received' ? '互加成为好友' : '申请添加友邻'}}</text>
+          </button>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>

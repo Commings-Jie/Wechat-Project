@@ -1,0 +1,166 @@
+/* 「光感手帐」Global Design System */
+page {
+  /* 主色与流光 */
+  --color-primary: #178394;
+  --color-primary-dark: #126370;
+  --color-primary-light: #EBF6F7;
+  --color-primary-gradient: linear-gradient(135deg, #178394 0%, #38A3B2 100%);
+  --color-accent-warm: #F4A236;
+  --color-accent-sun: #F9CA53;
+  --color-accent-rose: #E56B91;
+  
+  /* 纸质与背景色系 */
+  --color-bg: #FAF7F2;
+  --color-bg-secondary: #F2EFE9;
+  --color-card-bg: #FFFFFF;
+  
+  /* 文本色系 */
+  --color-text-main: #153940;
+  --color-text-sub: #5B797E;
+  --color-text-tertiary: #8EACB0;
+  
+  /* 毛玻璃与投影 */
+  --color-glass: rgba(255, 255, 255, 0.85);
+  --color-glass-border: rgba(255, 255, 255, 0.96);
+  --color-glass-shadow: 0 12rpx 36rpx rgba(21, 57, 64, 0.07), 0 2rpx 6rpx rgba(0, 0, 0, 0.02);
+  --color-paper-shadow: 0 8rpx 30rpx rgba(24, 60, 66, 0.05);
+
+  /* 圆角规范 */
+  --border-radius-sm: 14rpx;
+  --border-radius-md: 24rpx;
+  --border-radius-lg: 32rpx;
+  --border-radius-full: 999rpx;
+
+  /* 兼容历史简写变量 */
+  --bg-sky: var(--color-bg);
+  --text-main: var(--color-text-main);
+  --text-sub: var(--color-text-sub);
+  --text-muted: var(--color-text-tertiary);
+  --primary: var(--color-primary);
+  --primary-light: var(--color-primary-light);
+  --accent-gold: var(--color-accent-warm);
+  --accent-rose: var(--color-accent-rose);
+  --accent-cyan: #38A3B2;
+  --glass-card-bg: var(--color-glass);
+  --glass-border: var(--color-glass-border);
+  --glass-shadow: var(--color-glass-shadow);
+  --glass-shadow-hover: 0 16rpx 48rpx rgba(21, 57, 64, 0.12);
+
+  background: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button::after {
+  border: 0;
+}
+
+/* 页面通用承载外壳 */
+.page-shell {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 30rpx 30rpx 60rpx;
+}
+
+/* 核心通用毛玻璃卡片 */
+.glass-panel {
+  background: var(--glass-card-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1rpx solid var(--glass-border);
+  border-radius: 28rpx;
+  box-shadow: var(--glass-shadow);
+  box-sizing: border-box;
+}
+
+/* 手帐纸张卡片 */
+.journal-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 30rpx rgba(24, 60, 66, 0.05);
+  border: 1rpx solid rgba(226, 237, 238, 0.8);
+  box-sizing: border-box;
+}
+
+/* 拍立得相框（手帐相片效果） */
+.polaroid-frame {
+  background: #FFFFFF;
+  padding: 8rpx 8rpx 14rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 6rpx 18rpx rgba(20, 50, 55, 0.1);
+  display: inline-block;
+  transform: rotate(-1.5deg);
+  transition: transform 0.2s ease;
+}
+.polaroid-frame:active {
+  transform: rotate(0deg) scale(0.98);
+}
+
+/* 和纸胶带标签（Washi Tape Pill） */
+.washi-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 21rpx;
+  font-weight: 600;
+  line-height: 1.2;
+  box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.03);
+}
+
+.washi-tag.mint {
+  background: rgba(46, 158, 143, 0.12);
+  color: #1A7569;
+}
+.washi-tag.amber {
+  background: rgba(244, 162, 54, 0.14);
+  color: #B56D0E;
+}
+.washi-tag.sky {
+  background: rgba(23, 131, 148, 0.12);
+  color: #126370;
+}
+.washi-tag.rose {
+  background: rgba(229, 107, 145, 0.12);
+  color: #B33D65;
+}
+.washi-tag.slate {
+  background: rgba(100, 116, 139, 0.12);
+  color: #475569;
+}
+
+/* 触觉微交互 */
+.tap-active {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.15s ease;
+}
+.tap-active:active {
+  transform: scale(0.97);
+  opacity: 0.88;
+}
+
+/* 章节标题排版 */
+.section-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 40rpx 4rpx 20rpx;
+}
+.section-main-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+}
+.section-dot {
+  width: 8rpx;
+  height: 26rpx;
+  background: var(--primary);
+  border-radius: 4rpx;
+  margin-right: 14rpx;
+}
+.section-sub-title {
+  font-size: 22rpx;
+  color: var(--text-muted);
+}

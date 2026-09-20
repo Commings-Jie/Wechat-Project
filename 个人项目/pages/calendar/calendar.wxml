@@ -1,0 +1,160 @@
+<page-meta page-style="{{showReceiptModal ? 'overflow: hidden; height: 100vh;' : ''}}"></page-meta>
+<navigation-bar title="心情日历" back="{{false}}" color="#2C3E42" background="#FAF7F2"></navigation-bar>
+<view class="page-shell calendar-shell">
+  <view class="calendar-intro">
+    <view class="intro-badge washi-tag">🗓️ 手帐日历</view>
+    <view class="intro-title">岁月晴雨手帖</view>
+    <view class="intro-text">指尖翻阅往昔，每枚天气印章都是生活的小诗</view>
+  </view>
+
+  <scroll-view
+    class="month-scroll"
+    scroll-x
+    enhanced
+    scroll-with-animation
+    scroll-into-view="{{monthScrollTarget}}"
+    show-scrollbar="{{false}}"
+  >
+    <view class="month-tabs glass-panel">
+      <view
+        wx:for="{{months}}"
+        wx:key="value"
+        id="month-{{item.value}}"
+        class="month-tab tap-active {{selectedMonth === item.value ? 'month-tab-active' : ''}}"
+        data-month="{{item.value}}"
+        bindtap="selectMonth"
+      >
+        <text class="month-label">{{item.label}}</text>
+        <text class="month-count">{{item.count}}篇</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="calendar-panel journal-card">
+    <view class="washi-tape-strip washi-tape-center"></view>
+    <view class="calendar-title-row">
+      <view class="calendar-title">{{selectedMonthText}}</view>
+      <view class="chart-mark washi-tag">本月 {{selectedMonthCount}} 篇印章</view>
+    </view>
+    <!-- 星期表头 -->
+    <view class="calendar-weekdays">
+      <view class="weekday-col">周一</view>
+      <view class="weekday-col">周二</view>
+      <view class="weekday-col">周三</view>
+      <view class="weekday-col">周四</view>
+      <view class="weekday-col">周五</view>
+      <view class="weekday-col weekend-col">周六</view>
+      <view class="weekday-col weekend-col">周日</view>
+    </view>
+
+    <!-- 日历手帐网格 -->
+    <view class="calendar-grid">
+      <block wx:for="{{calendarDays}}" wx:key="key">
+        <view wx:if="{{item.isEmpty}}" class="calendar-cell cell-empty"></view>
+        <view
+          wx:else
+          class="calendar-cell cell-day {{item.isSelected ? 'cell-selected' : ''}} {{item.isFuture ? 'cell-future' : ''}} {{item.isToday ? 'cell-today' : ''}} {{item.hasRecord ? 'has-record' : ''}} tap-active"
+          data-date="{{item.date}}"
+          data-future="{{item.isFuture}}"
+          bindtap="onTapDayCell"
+        >
+          <view class="cell-header">
+            <text class="cell-day-num">{{item.day}}</text>
+            <text wx:if="{{item.isToday}}" class="cell-today-tag">今</text>
+          </view>
+          <view class="cell-body">
+            <text wx:if="{{item.weatherSymbol}}" class="cell-weather-stamp">{{item.weatherSymbol}}</text>
+            <view wx:elif="{{item.isToday && !item.hasRecord}}" class="cell-today-hint"></view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view wx:if="{{selectedRecord}}" class="detail-panel journal-card">
+    <view class="washi-tape-strip washi-tape-left washi-tape-warm"></view>
+    <view class="detail-head">
+      <view class="detail-weather-stamp">
+        <text class="weather-emoji">{{selectedRecord.symbol}}</text>
+      </view>
+      <view class="detail-meta">
+        <view class="detail-title-row">
+          <text class="detail-title">{{selectedRecord.weatherLabel}}</text>
+          <text class="detail-energy-badge">能量 {{selectedRecord.moodScore}}/5</text>
+        </view>
+        <view class="detail-date">{{selectedRecord.dateText}}</view>
+      </view>
+      <view class="detail-actions">
+        <view class="share-receipt-btn tap-active" bindtap="openReceiptModal">
+          <text class="receipt-icon">🏷️</text>
+          <text>手签卡</text>
+        </view>
+        <view class="edit-action tap-active" bindtap="editSelected">
+          <text class="edit-icon">✏️</text>
+          <text>修改</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="detail-text-box">
+      <view class="detail-text">{{selectedRecord.moodText || '这一天没有留下文字记录~'}}</view>
+    </view>
+
+    <view wx:if="{{selectedRecord.tagText}}" class="detail-tag-row">
+      <text class="washi-tag"># {{selectedRecord.tagText}}</text>
+    </view>
+
+    <view wx:if="{{selectedRecord.images.length}}" class="detail-images">
+      <view wx:for="{{selectedRecord.images}}" wx:key="*this" class="detail-polaroid polaroid-frame tap-active" data-current="{{item}}" bindtap="previewSelectedImage">
+        <image class="detail-image" src="{{item}}" mode="aspectFill"></image>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="calendar-empty-tip journal-card tap-active" bindtap="onTapEmptyTip">
+    <view class="washi-tape-strip washi-tape-center washi-tape-warm"></view>
+    <view class="empty-tip-inner">
+      <view class="tip-icon-box">
+        <text class="tip-icon">✨</text>
+      </view>
+      <view class="tip-content">
+        <view class="tip-title">轻轻触摸日历格子</view>
+        <view class="tip-desc">回看那一天的晴雨冷暖，或写下新的心情便签</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 离屏 Canvas 用于生成拍立得情绪手签卡片 -->
+  <canvas type="2d" id="receiptCanvas" class="receipt-canvas"></canvas>
+
+  <!-- 拍立得手签卡片预览弹窗（防穿透双重隔离） -->
+  <view wx:if="{{showReceiptModal}}" class="receipt-modal-wrapper" catchtouchmove="preventTouchMove">
+    <view class="receipt-modal-backdrop" bindtap="closeReceiptModal"></view>
+    <view class="receipt-modal-box journal-card" catchtap="stopBubble">
+      <view class="washi-tape-strip washi-tape-center washi-tape-warm"></view>
+      <view class="receipt-modal-header">
+        <view class="receipt-modal-badge washi-tag">🏷️ 岁月手签</view>
+        <view class="receipt-modal-title">岁月晴雨 · 情绪手帖</view>
+        <view class="receipt-modal-subtitle">已为您编排专属手签日帖，可长按或保存到相册</view>
+      </view>
+
+      <scroll-view scroll-y class="receipt-scroll-container" enhanced show-scrollbar="{{false}}">
+        <image
+          class="receipt-preview-img"
+          src="{{receiptImagePath}}"
+          mode="widthFix"
+          show-menu-by-longpress
+        ></image>
+      </scroll-view>
+
+      <view class="receipt-modal-btns">
+        <button class="receipt-action-btn receipt-save-btn tap-active" bindtap="saveReceiptToPhotos" loading="{{savingReceipt}}">
+          📥 保存到相册
+        </button>
+        <button class="receipt-action-btn receipt-close-btn tap-active" bindtap="closeReceiptModal">
+          关闭
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

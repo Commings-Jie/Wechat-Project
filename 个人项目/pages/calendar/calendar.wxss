@@ -1,0 +1,640 @@
+page {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.calendar-shell {
+  min-height: auto;
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+.calendar-intro {
+  padding: 16rpx 6rpx 28rpx;
+}
+
+.intro-badge {
+  display: inline-flex;
+  margin-bottom: 12rpx;
+  background: rgba(42, 126, 136, 0.12);
+  color: var(--color-primary);
+  font-size: 20rpx;
+  font-weight: 700;
+}
+
+.intro-title {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+  letter-spacing: 0.5rpx;
+}
+
+.intro-text {
+  margin-top: 8rpx;
+  color: var(--color-text-sub);
+  font-size: 24rpx;
+}
+
+/* 月份轮播轨道 - 悬浮毛玻璃胶囊轨道 */
+.month-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.month-tabs {
+  min-width: 100%;
+  height: 96rpx;
+  display: inline-flex;
+  align-items: center;
+  padding: 10rpx 12rpx;
+  box-sizing: border-box;
+  border-radius: 999rpx;
+  background: rgba(235, 244, 245, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4rpx 16rpx rgba(21, 57, 64, 0.06);
+}
+
+.month-tab {
+  min-width: 175rpx;
+  flex: 1 0 175rpx;
+  height: 76rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  color: #5B797E;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.month-label {
+  font-size: 26rpx;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #5B797E;
+}
+
+.month-count {
+  margin-top: 2rpx;
+  font-size: 19rpx;
+  color: #8EACB0;
+}
+
+.month-tab-active {
+  background: #178394 !important;
+  background: linear-gradient(135deg, #178394 0%, #38A3B2 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 8rpx 20rpx rgba(23, 131, 148, 0.35) !important;
+  font-weight: 700;
+}
+
+.month-tab-active .month-label {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.month-tab-active .month-count {
+  color: rgba(255, 255, 255, 0.92) !important;
+  opacity: 1 !important;
+}
+
+/* 日历手帐面板 */
+.calendar-panel {
+  position: relative;
+  overflow: hidden;
+  margin-top: 24rpx;
+  padding: 34rpx 18rpx 20rpx;
+}
+
+/* 装饰性胶带 */
+.washi-tape-strip {
+  position: absolute;
+  top: -10rpx;
+  height: 24rpx;
+  border-radius: 4rpx;
+  background: rgba(249, 202, 83, 0.55);
+  box-shadow: 0 2rpx 6rpx rgba(249, 202, 83, 0.2);
+  transform: rotate(-1.5deg);
+  z-index: 2;
+}
+
+.washi-tape-center {
+  left: 50%;
+  width: 140rpx;
+  margin-left: -70rpx;
+}
+
+.washi-tape-left {
+  left: 48rpx;
+  width: 120rpx;
+}
+
+.washi-tape-warm {
+  background: rgba(243, 156, 107, 0.45);
+  box-shadow: 0 2rpx 6rpx rgba(243, 156, 107, 0.2);
+  transform: rotate(2deg);
+}
+
+.calendar-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16rpx 8rpx;
+}
+
+.calendar-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.chart-mark {
+  font-size: 20rpx;
+  color: var(--color-primary);
+  background: rgba(42, 126, 136, 0.1);
+  font-weight: 600;
+}
+
+/* 星期表头 */
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  padding: 18rpx 0 14rpx;
+  border-bottom: 1rpx dashed rgba(200, 190, 180, 0.45);
+  margin-bottom: 14rpx;
+}
+
+.weekday-col {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #76878B;
+  letter-spacing: 0.5rpx;
+}
+
+.weekday-col.weekend-col {
+  color: #E88352;
+}
+
+/* 日历手帐网格 */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.calendar-cell {
+  position: relative;
+  min-height: 108rpx;
+  border-radius: 18rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8rpx 4rpx 10rpx;
+  box-sizing: border-box;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cell-empty {
+  background: transparent;
+  pointer-events: none;
+}
+
+.cell-day {
+  background: #FFFFFF;
+  border: 1.5rpx solid rgba(226, 237, 238, 0.95);
+  box-shadow: 0 4rpx 12rpx rgba(22, 60, 68, 0.03);
+}
+
+.cell-day.has-record {
+  background: #F7FCFC;
+  border-color: rgba(182, 222, 226, 0.85);
+}
+
+.cell-day.cell-today {
+  border-color: #38A3B2;
+}
+
+.cell-day.cell-future {
+  background: #FAF8F5;
+  border: 1.5rpx dashed #E5E0D6;
+  opacity: 0.55;
+}
+
+@keyframes cellPop {
+  0% { transform: scale(0.93) translateY(2rpx); }
+  60% { transform: scale(1.05) translateY(-4rpx); }
+  100% { transform: scale(1) translateY(-2rpx); }
+}
+
+/* 选中高亮态 */
+.cell-day.cell-selected {
+  background: #EAF6F6 !important;
+  border: 2.5rpx solid #178394 !important;
+  box-shadow: 0 6rpx 18rpx rgba(23, 131, 148, 0.25) !important;
+  transform: translateY(-2rpx);
+  animation: cellPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cell-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+  width: 100%;
+}
+
+.cell-day-num {
+  font-size: 23rpx;
+  font-weight: 700;
+  color: #2C3E42;
+  line-height: 1.2;
+}
+
+.cell-selected .cell-day-num {
+  color: #178394;
+  font-weight: 800;
+}
+
+.cell-future .cell-day-num {
+  color: #A0B2B5;
+}
+
+.cell-today-tag {
+  font-size: 16rpx;
+  line-height: 1.1;
+  padding: 2rpx 6rpx;
+  border-radius: 6rpx;
+  background: #178394;
+  color: #FFFFFF;
+  font-weight: 700;
+  transform: scale(0.85);
+}
+
+.cell-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 4rpx;
+}
+
+.cell-weather-stamp {
+  font-size: 38rpx;
+  line-height: 1;
+  text-align: center;
+  filter: drop-shadow(0 2rpx 4rpx rgba(0, 0, 0, 0.08));
+}
+
+.cell-today-hint {
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: #178394;
+  opacity: 0.65;
+}
+
+/* 详情手签卡片 */
+.detail-panel {
+  position: relative;
+  margin-top: 26rpx;
+  padding: 32rpx 28rpx;
+}
+
+.detail-head {
+  display: flex;
+  align-items: center;
+}
+
+.detail-weather-stamp {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFF6E5 0%, #FFEACC 100%);
+  border: 4rpx solid #FFFFFF;
+  box-shadow: 0 6rpx 18rpx rgba(243, 156, 107, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.weather-emoji {
+  font-size: 46rpx;
+  line-height: 1;
+}
+
+.detail-meta {
+  flex: 1;
+  margin-left: 20rpx;
+  min-width: 0;
+}
+
+.detail-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.detail-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: var(--color-text-main);
+  line-height: 1.2;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.detail-energy-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3rpx 14rpx;
+  border-radius: 999rpx;
+  background: rgba(243, 156, 107, 0.15);
+  border: 1rpx solid rgba(243, 156, 107, 0.35);
+  color: #D96A27;
+  font-size: 20rpx;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.detail-date {
+  margin-top: 6rpx;
+  color: var(--color-text-sub);
+  font-size: 22rpx;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.detail-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.share-receipt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 10rpx 20rpx;
+  border-radius: var(--border-radius-full);
+  border: 1px solid rgba(243, 156, 107, 0.4);
+  background: rgba(255, 248, 238, 0.95);
+  color: #D96A27;
+  font-size: 22rpx;
+  font-weight: 700;
+  box-shadow: 0 4rpx 10rpx rgba(243, 156, 107, 0.12);
+}
+
+.receipt-icon {
+  font-size: 22rpx;
+}
+
+.edit-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 10rpx 22rpx;
+  border-radius: var(--border-radius-full);
+  border: 1px solid rgba(42, 126, 136, 0.25);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--color-primary);
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.edit-icon {
+  font-size: 22rpx;
+}
+
+.detail-text-box {
+  margin-top: 24rpx;
+  padding: 22rpx 24rpx;
+  background: rgba(250, 247, 242, 0.7);
+  border-radius: var(--border-radius-sm);
+  border: 1px dashed rgba(200, 190, 180, 0.4);
+}
+
+.detail-text {
+  font-size: 27rpx;
+  line-height: 1.7;
+  color: var(--color-text-main);
+}
+
+.detail-tag-row {
+  margin-top: 18rpx;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-top: 24rpx;
+}
+
+.detail-polaroid {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+  padding: 6rpx;
+  background: #FFFFFF;
+}
+
+.detail-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 8rpx;
+}
+
+/* 空提示 - 手帐便签卡 */
+.calendar-empty-tip {
+  position: relative;
+  margin-top: 26rpx;
+  padding: 30rpx 26rpx;
+  box-sizing: border-box;
+}
+
+.empty-tip-inner {
+  display: flex;
+  align-items: center;
+}
+
+.tip-icon-box {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(42, 126, 136, 0.12) 0%, rgba(70, 179, 190, 0.08) 100%);
+  border: 2rpx solid rgba(42, 126, 136, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 12rpx rgba(21, 57, 64, 0.04);
+}
+
+.tip-icon {
+  font-size: 38rpx;
+  line-height: 1;
+}
+
+.tip-content {
+  flex: 1;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tip-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--color-text-main);
+  line-height: 1.3;
+}
+
+.tip-desc {
+  margin-top: 8rpx;
+  color: var(--color-text-sub);
+  font-size: 22rpx;
+  line-height: 1.4;
+  letter-spacing: 0.3rpx;
+}
+
+/* 离屏 Canvas 画布 */
+.receipt-canvas {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  width: 320px;
+  height: 520px;
+  pointer-events: none;
+  z-index: -100;
+}
+
+/* 拍立得日签弹窗（物理隔离分层架构，杜绝滑动穿透） */
+.receipt-modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx;
+  box-sizing: border-box;
+  touch-action: none;
+}
+
+.receipt-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(18, 32, 35, 0.68);
+  backdrop-filter: blur(5px);
+  touch-action: none;
+}
+
+.receipt-modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 640rpx;
+  max-height: 88vh;
+  padding: 36rpx 28rpx 28rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background: #FAF7F2;
+  border-radius: 28rpx;
+  z-index: 2;
+}
+
+.receipt-modal-header {
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.receipt-modal-badge {
+  display: inline-flex;
+  margin-bottom: 8rpx;
+  font-size: 20rpx;
+  background: rgba(23, 131, 148, 0.1);
+  color: #178394;
+  font-weight: 700;
+}
+
+.receipt-modal-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #153940;
+}
+
+.receipt-modal-subtitle {
+  margin-top: 6rpx;
+  font-size: 21rpx;
+  color: #8CABB0;
+}
+
+.receipt-scroll-container {
+  width: 100%;
+  max-height: 62vh;
+  border-radius: 18rpx;
+  box-shadow: 0 10rpx 30rpx rgba(18, 50, 56, 0.14);
+  margin-bottom: 24rpx;
+  background: #FAF7F2;
+  box-sizing: border-box;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.receipt-preview-img {
+  width: 100%;
+  display: block;
+  border-radius: 18rpx;
+}
+
+.receipt-modal-btns {
+  width: 100%;
+  display: flex;
+  gap: 16rpx;
+}
+
+.receipt-action-btn {
+  flex: 1;
+  height: 82rpx;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: none;
+}
+
+.receipt-action-btn::after {
+  border: none;
+}
+
+.receipt-save-btn {
+  background: linear-gradient(135deg, #178394 0%, #38A3B2 100%);
+  color: #FFFFFF;
+  box-shadow: 0 8rpx 20rpx rgba(23, 131, 148, 0.32);
+}
+
+.receipt-close-btn {
+  background: #EBF2F3;
+  color: #5B797E;
+}

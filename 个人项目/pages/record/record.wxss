@@ -1,0 +1,460 @@
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
+}
+
+.record-shell {
+  padding-bottom: 90rpx;
+}
+
+/* 1. 日期便签条 */
+.date-stamp-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 28rpx;
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  box-shadow: 0 6rpx 20rpx rgba(22, 60, 68, 0.05);
+  border: 1rpx solid rgba(220, 235, 236, 0.9);
+}
+
+.date-stamp-left {
+  display: flex;
+  align-items: center;
+}
+
+.calendar-icon-box {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 18rpx;
+  background: #EDF7F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+}
+
+.date-stamp-text {
+  margin-left: 18rpx;
+}
+
+.date-stamp-caption {
+  font-size: 20rpx;
+  color: #8CABB0;
+  font-weight: 500;
+}
+
+.date-stamp-value {
+  margin-top: 4rpx;
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #153940;
+}
+
+.date-stamp-picker-btn {
+  padding: 12rpx 24rpx;
+  border-radius: 30rpx;
+  background: rgba(23, 131, 148, 0.1);
+  color: #178394;
+  font-size: 23rpx;
+  font-weight: 700;
+}
+
+/* 2. 6 枚光感心情印章 */
+.weather-stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18rpx;
+}
+
+.weather-stamp {
+  position: relative;
+  min-height: 200rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 10rpx;
+  box-sizing: border-box;
+  border-radius: 26rpx;
+  background: #FFFFFF;
+  border: 1.5rpx solid rgba(226, 237, 238, 0.9);
+  box-shadow: 0 8rpx 24rpx rgba(22, 60, 68, 0.04);
+}
+
+.stamp-icon-wrap {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F4F8F8;
+  transition: all 0.2s ease;
+}
+
+.stamp-icon {
+  font-size: 42rpx;
+}
+
+.stamp-label {
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #153940;
+}
+
+.stamp-desc {
+  margin-top: 4rpx;
+  font-size: 19rpx;
+  color: #8CABB0;
+  text-align: center;
+}
+
+@keyframes stampPress {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.92) translateY(3rpx); }
+  75% { transform: scale(1.06) translateY(-3rpx); }
+  100% { transform: scale(1) translateY(-2rpx); }
+}
+
+/* 激活态印章（流光渐变与橡胶下压弹性） */
+.weather-stamp.active {
+  border-color: rgba(23, 131, 148, 0.4);
+  box-shadow: 0 12rpx 32rpx rgba(22, 125, 141, 0.16);
+  transform: translateY(-2rpx);
+  animation: stampPress 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.weather-stamp.active .stamp-icon-wrap {
+  transform: scale(1.12);
+  box-shadow: 0 6rpx 16rpx rgba(23, 131, 148, 0.18);
+}
+
+.weather-stamp.active.weather-sunny {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF8EE 100%);
+  border-color: #FCD34D;
+}
+.weather-stamp.active.weather-cloudy {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%);
+  border-color: #6EE7B7;
+}
+.weather-stamp.active.weather-overcast {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  border-color: #CBD5E1;
+}
+.weather-stamp.active.weather-rainy {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 100%);
+  border-color: #7DD3FC;
+}
+.weather-stamp.active.weather-stormy {
+  background: linear-gradient(180deg, #FFFFFF 0%, #EEF2FF 100%);
+  border-color: #A5B4FC;
+}
+.weather-stamp.active.weather-rainbow {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDF2F8 100%);
+  border-color: #F9A8D4;
+}
+
+.stamp-check {
+  position: absolute;
+  top: 10rpx;
+  right: 12rpx;
+  width: 28rpx;
+  height: 28rpx;
+  border-radius: 50%;
+  background: #178394;
+  color: #FFFFFF;
+  font-size: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+/* 3. 心情强度（能量星级胶囊） */
+.score-badge {
+  font-size: 22rpx;
+  color: #B56D0E;
+  font-weight: 700;
+  background: #FFFBEB;
+  padding: 4rpx 14rpx;
+  border-radius: 20rpx;
+}
+
+.score-pill-track {
+  display: flex;
+  gap: 14rpx;
+}
+
+.score-pill-item {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 20rpx;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(226, 237, 238, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 14rpx rgba(22, 60, 68, 0.03);
+}
+
+.score-star-symbol {
+  font-size: 26rpx;
+  color: #D1D5DB;
+  line-height: 1;
+}
+
+.score-pill-text {
+  font-size: 20rpx;
+  color: #8CABB0;
+  margin-top: 4rpx;
+  font-weight: 600;
+}
+
+.score-pill-item.score-active {
+  background: linear-gradient(180deg, #FFFDF8 0%, #FEF3C7 100%);
+  border-color: #FBBF24;
+}
+.score-pill-item.score-active .score-star-symbol {
+  color: #F59E0B;
+}
+.score-pill-item.score-active .score-pill-text {
+  color: #B45309;
+}
+
+/* 4. 手帐信纸便签 */
+.journal-paper-box {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 28rpx;
+  box-sizing: border-box;
+  border: 1rpx solid rgba(226, 237, 238, 0.9);
+  box-shadow: 0 8rpx 28rpx rgba(22, 60, 68, 0.05);
+}
+
+.journal-textarea {
+  width: 100%;
+  height: 160rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #153940;
+}
+
+.journal-placeholder {
+  color: #9FB5B8;
+  font-size: 26rpx;
+}
+
+.journal-word-count {
+  text-align: right;
+  font-size: 20rpx;
+  color: #8CABB0;
+  margin-top: 8rpx;
+}
+
+/* 5. 拍立得相册 */
+.polaroid-album-row {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.polaroid-item {
+  position: relative;
+}
+
+.polaroid-tape {
+  position: absolute;
+  top: -10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 16rpx;
+  background: rgba(23, 131, 148, 0.3);
+  border-radius: 4rpx;
+  z-index: 2;
+}
+
+.polaroid-pic {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 6rpx;
+  display: block;
+}
+
+.polaroid-del-btn {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.85);
+  color: #FFFFFF;
+  font-size: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.polaroid-add-box {
+  width: 144rpx;
+  height: 154rpx;
+  border-radius: 18rpx;
+  background: #FFFFFF;
+  border: 2rpx dashed #C8DBDC;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.polaroid-add-plus {
+  font-size: 38rpx;
+  color: #178394;
+  line-height: 1;
+}
+
+.polaroid-add-text {
+  font-size: 20rpx;
+  color: #8CABB0;
+  margin-top: 8rpx;
+  font-weight: 600;
+}
+
+/* 6. 和纸贴纸系统 */
+.tag-group-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+}
+
+.washi-group-card {
+  background: #FFFFFF;
+  border-radius: 22rpx;
+  padding: 20rpx 24rpx;
+  border: 1rpx solid rgba(226, 237, 238, 0.85);
+  box-shadow: 0 4rpx 16rpx rgba(22, 60, 68, 0.03);
+}
+
+.washi-group-title {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #8CABB0;
+}
+
+.washi-tag-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+  margin-top: 14rpx;
+}
+
+.washi-tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 10rpx 20rpx;
+  border-radius: 24rpx;
+  background: #F4F8F8;
+  border: 1rpx solid #E2ECEC;
+  font-size: 24rpx;
+  color: #3B5B60;
+  font-weight: 500;
+}
+
+.chip-icon {
+  margin-right: 8rpx;
+  font-size: 26rpx;
+}
+
+.washi-tag-chip.chip-selected {
+  background: rgba(23, 131, 148, 0.15);
+  border-color: #178394;
+  color: #126370;
+  font-weight: 700;
+}
+
+.chip-add {
+  color: #178394;
+  background: #E8F5F4;
+  border-color: #BEDDDA;
+  font-weight: 700;
+}
+
+.custom-tag-modal-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 18rpx;
+  background: #FFFFFF;
+  padding: 14rpx 20rpx;
+  border-radius: 18rpx;
+  border: 1rpx solid #178394;
+}
+
+.custom-tag-input {
+  flex: 1;
+  font-size: 26rpx;
+  color: #153940;
+}
+
+.custom-tag-confirm-btn {
+  padding: 8rpx 24rpx;
+  background: #178394;
+  color: #FFFFFF;
+  border-radius: 14rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+/* 7. 操作按钮 */
+.record-action-group {
+  margin-top: 50rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.save-record-btn {
+  height: 92rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 28rpx;
+  background: #178394;
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: 800;
+  letter-spacing: 1rpx;
+  box-shadow: 0 12rpx 28rpx rgba(23, 131, 148, 0.25);
+}
+
+.save-btn-icon {
+  margin-right: 10rpx;
+  font-size: 32rpx;
+}
+
+.delete-record-btn {
+  height: 84rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24rpx;
+  background: #FEE2E2;
+  color: #DC2626;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+

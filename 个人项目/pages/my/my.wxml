@@ -1,0 +1,141 @@
+<navigation-bar title="我的手帐档案" back="{{false}}" color="#2C3E42" background="#FAF7F2"></navigation-bar>
+<scroll-view class="my-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+  <view class="my-page">
+    <!-- 个人手帐档案卡片 -->
+    <view class="profile-card glass-panel">
+      <view class="washi-tape-strip washi-tape-left washi-tape-warm"></view>
+      
+      <view class="avatar-polaroid polaroid-frame tap-active" bindtap="openEditModal" aria-label="点击修改头像">
+        <image wx:if="{{avatarUrl}}" class="avatar-img" src="{{avatarUrl}}" mode="aspectFill"></image>
+        <view wx:else class="avatar-placeholder">{{avatarText}}</view>
+        <view class="avatar-camera-seal">📷</view>
+      </view>
+
+      <view class="profile-copy">
+        <view class="profile-header-row">
+          <view class="nickname-box tap-active" bindtap="openEditModal">
+            <text class="nickname-text">{{nickname}}</text>
+            <text class="nickname-edit-icon">✎</text>
+          </view>
+          <view class="edit-profile-btn tap-active" bindtap="openEditModal">修改资料</view>
+        </view>
+
+        <view class="profile-role-tag washi-tag">✨ 晴雨手帐主理人</view>
+
+        <view class="mood-id-row">
+          <text class="mood-id-label">专属印章号：</text>
+          <text class="mood-id-value" user-select>{{moodId}}</text>
+          <view wx:if="{{cloudStatus === '云端已连接'}}" class="copy-tag tap-active" catchtap="copyMoodId">复制</view>
+        </view>
+
+        <view class="cloud-status">
+          <view class="status-beacon {{cloudStatus === '云端已连接' ? 'online' : ''}}"></view>
+          <text class="cloud-status-text">{{cloudStatus}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快捷统计 Bento 便签卡 -->
+    <view class="metric-row journal-card">
+      <view class="metric tap-active" bindtap="openCalendar">
+        <text class="metric-value">{{recordCount}}</text>
+        <text class="metric-label">📖 累计手帐篇数</text>
+      </view>
+      <view class="metric-divider"></view>
+      <view class="metric tap-active" bindtap="openFriends">
+        <text class="metric-value">{{friendCount}}</text>
+        <text class="metric-label">👥 交换晴雨好友</text>
+      </view>
+    </view>
+
+    <!-- 菜单入口：手帐书签列 -->
+    <view class="menu-list journal-card">
+      <view class="menu-item tap-active" bindtap="openFriends">
+        <view class="menu-icon-seal icon-friends">👥</view>
+        <view class="menu-copy">
+          <text class="menu-title">好友空间</text>
+          <text class="menu-subtitle">互相翻阅晴雨手帖，温暖留言</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item tap-active" bindtap="openCalendar">
+        <view class="menu-icon-seal icon-calendar">🗓️</view>
+        <view class="menu-copy">
+          <text class="menu-title">岁月心情日历</text>
+          <text class="menu-subtitle">按月份翻阅生活阴晴印章</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item tap-active" bindtap="openStats">
+        <view class="menu-icon-seal icon-stats">📊</view>
+        <view class="menu-copy">
+          <text class="menu-title">气象统计年报</text>
+          <text class="menu-subtitle">情绪分布谱系与月度心晴曲线</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 账号操作按钮 -->
+    <view class="account-actions">
+      <button wx:if="{{cloudStatus !== '云端已连接'}}" class="connect-btn tap-active" bindtap="connectCloud" loading="{{connecting}}">☁️ 连接云端手帐同步</button>
+      <button wx:if="{{cloudStatus === '云端已连接'}}" class="logout-button tap-active" bindtap="signOut">退出云端账号</button>
+    </view>
+
+    <view class="profile-hint">💡 提示：点击头像或卡片可随时更换微信头像与昵称</view>
+
+    <view class="my-note">
+      <view class="my-note-title">📖 心情天气站</view>
+      <view class="my-note-sub">把平凡的日子，收藏成自己的天气。</view>
+    </view>
+  </view>
+</scroll-view>
+
+<!-- 修改资料弹窗 Modal (毛玻璃手帐便签弹窗) -->
+<view wx:if="{{showEditModal}}" class="edit-modal-mask" catchtouchmove="preventTouchMove">
+  <view class="edit-modal-card glass-panel">
+    <view class="washi-tape-strip washi-tape-center washi-tape-warm"></view>
+    <view class="modal-title">完善个人手帐资料</view>
+    <view class="modal-desc">可选用微信头像或从相册上传，支持微信一键填入昵称</view>
+
+    <!-- 头像选择区域 -->
+    <view class="modal-section">
+      <view class="modal-label">手帐封面头像</view>
+      <view class="modal-avatar-row">
+        <view class="modal-avatar-polaroid polaroid-frame">
+          <image wx:if="{{modalAvatarUrl}}" class="modal-avatar-preview" src="{{modalAvatarUrl}}" mode="aspectFill"></image>
+          <view wx:else class="modal-avatar-preview modal-avatar-fallback">{{modalNickname ? modalNickname.slice(0, 1) : '心'}}</view>
+        </view>
+        <view class="modal-avatar-actions">
+          <button class="modal-sub-btn primary tap-active" open-type="chooseAvatar" bindchooseavatar="onModalChooseAvatar">选用微信头像</button>
+          <button class="modal-sub-btn tap-active" bindtap="chooseFromAlbum">从相册挑选</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 昵称输入区域 -->
+    <view class="modal-section">
+      <view class="modal-label">手帐昵称</view>
+      <view class="modal-input-wrap">
+        <input
+          type="nickname"
+          class="modal-nickname-input"
+          value="{{modalNickname}}"
+          placeholder="点击一键选取微信昵称或手动输入"
+          placeholder-class="modal-placeholder"
+          bindinput="onModalNicknameInput"
+          bindchange="onModalNicknameInput"
+        />
+      </view>
+      <view class="modal-input-tip">💡 提示：点击输入框，微信键盘上方会自动弹出你的微信昵称，点击即可填入</view>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="modal-btn-row">
+      <button class="modal-action-btn cancel tap-active" bindtap="closeEditModal">取消</button>
+      <button class="modal-action-btn confirm tap-active" loading="{{savingProfile}}" bindtap="saveEditProfile">保存并应用</button>
+    </view>
+  </view>
+</view>
+
+
